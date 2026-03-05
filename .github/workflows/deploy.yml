@@ -27,19 +27,15 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        run: |
-          cd ai-replacement-risk
-          npm ci
+        run: npm ci
 
       - name: Build
-        run: |
-          cd ai-replacement-risk
-          npm run build
+        run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ai-replacement-risk/dist
+          path: dist
 
   deploy:
     needs: build
