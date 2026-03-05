@@ -59,7 +59,7 @@ app.post('/api/ai/analyze', async (req, res) => {
     5. **具体建议**：3-5条可执行的职业发展建议`;
 
     const apiRequest = {
-      model: 'qwen-max',
+      model: 'qwen3.5-plus-2026-02-15',
       input: {
         messages: [
           {
