@@ -29,6 +29,7 @@ function App() {
   const [selectedCareer, setSelectedCareer] = useState(null);
   const [personalizedFactors, setPersonalizedFactors] = useState(null);
   const [showPersonalization, setShowPersonalization] = useState(false);
+  const [showResult, setShowResult] = useState(false);
 
   useEffect(() => {
     const handleMessage = (event) => {
@@ -70,6 +71,7 @@ function App() {
     
     decrementUsage();
     setResult(assessmentResult);
+    setShowResult(true);
   };
 
   const handlePurchase = async (packageData) => {
@@ -191,31 +193,26 @@ function App() {
                 </Typography.Text>
                 <Divider type="vertical" />
                 <Button 
-                  type={isPersonalizedActive() ? "primary" : "default"}
-                  onClick={() => handleAssess(true)}
+                  type="primary"
+                  onClick={() => handleAssess(false)}
                   style={{ 
                     borderRadius: 20,
-                    background: isPersonalizedActive() ? theme.gradient : undefined,
-                    border: isPersonalizedActive() ? 'none' : undefined
+                    background: theme.gradient,
+                    border: 'none'
                   }}
                 >
-                  {isPersonalizedActive() ? "🚀 个性化评估" : "📊 标准评估"}
+                  🤖 AI智能评估
                 </Button>
-                {isPersonalizedActive() && (
-                  <Button 
-                    onClick={() => handleAssess(false)}
-                    style={{ marginLeft: 8, borderRadius: 20 }}
-                    ghost
-                  >
-                    标准评估
-                  </Button>
-                )}
               </Card>
             </>
           )}
           
-          <ResultDisplay result={result} />
-          <AIAnalysis assessmentResult={result} />
+          {showResult && (
+            <>
+              <ResultDisplay result={result} />
+              <AIAnalysis assessmentResult={result} autoRun={true} />
+            </>
+          )}
         </div>
       </Content>
       

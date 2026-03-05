@@ -1,13 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Button, Spin, Alert, Collapse, message } from 'antd';
 import { RobotOutlined } from '@ant-design/icons';
 import { useMediaQuery } from 'react-responsive';
+import { checkAvailableUsage, decrementUsage } from '../utils/usage';
 
-const AIAnalysis = ({ assessmentResult }) => {
+const AIAnalysis = ({ assessmentResult, autoRun = false }) => {
   const [loading, setLoading] = useState(false);
   const [analysis, setAnalysis] = useState(null);
   const [error, setError] = useState(null);
   const isMobile = useMediaQuery({ maxWidth: 768 });
+
+  useEffect(() => {
+    if (autoRun && assessmentResult && !analysis && !loading) {
+      handleAnalyze();
+    }
+  }, [autoRun, assessmentResult]);
 
   const handleAnalyze = async () => {
     if (!assessmentResult) {
@@ -102,23 +109,7 @@ const AIAnalysis = ({ assessmentResult }) => {
           onClose={() => setError(null)}
         />
       )}
-      
-      {!analysis && !loading && (
-        <div style={{ textAlign: 'center', padding: '20px' }}>
-          <p style={{ marginBottom: 16 }}>
-            点击下方按钮，让<span style={{ color: '#1890ff', fontWeight: 'bold' }}>通义千问AI</span>为您深度分析职业风险
-          </p>
-          <Button 
-            type="primary" 
-            size={isMobile ? 'large' : 'middle'}
-            onClick={handleAnalyze}
-            icon={<RobotOutlined />}
-          >
-            开始AI分析
-          </Button>
-        </div>
-      )}
-      
+
       {loading && (
         <div style={{ textAlign: 'center', padding: '40px' }}>
           <Spin size="large" />
@@ -133,7 +124,14 @@ const AIAnalysis = ({ assessmentResult }) => {
 
       {analysis && (
         <div style={{ marginTop: 16, textAlign: 'center' }}>
-          <Button onClick={() => setAnalysis(null)}>
+          <Button onClick={() => {
+            if (!checkAvailableUsage()) {
+              message.warning('您的免费次数已用完，请购买更多次数');
+              return;
+            }
+            decrementUsage();
+            setAnalysis(null);
+          }}>
             重新分析
           </Button>
         </div>

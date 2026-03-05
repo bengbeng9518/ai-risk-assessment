@@ -53,6 +53,7 @@ const CareerForm = ({ onAssess, onCareerSelect }) => {
       if (value && onCareerSelect) {
         onCareerSelect(value);
       }
+      form.setFieldsValue({ career: value });
     }
   };
 
@@ -73,6 +74,12 @@ const CareerForm = ({ onAssess, onCareerSelect }) => {
     form.setFieldsValue({ customCareer: undefined });
   };
 
+  const handleCustomKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      form.submit();
+    }
+  };
+
   return (
     <Form form={form} onFinish={handleSubmit} layout={isMobile ? 'vertical' : 'horizontal'}>
       {customMode ? (
@@ -88,6 +95,7 @@ const CareerForm = ({ onAssess, onCareerSelect }) => {
             placeholder="例如：产品经理、数据分析师等"
             size={isMobile ? 'large' : 'middle'}
             onChange={handleCustomCareerChange}
+            onPressEnter={handleCustomKeyPress}
             suffix={
               <Button type="link" onClick={handleBackToSelect} style={{ padding: 0 }}>
                 返回选择
@@ -131,19 +139,6 @@ const CareerForm = ({ onAssess, onCareerSelect }) => {
           </Select>
         </Form.Item>
       )}
-
-      <Form.Item>
-        <Button 
-          type="primary" 
-          htmlType="submit"
-          size={isMobile ? 'large' : 'middle'}
-          block={isMobile}
-          loading={loading}
-          style={{ height: isMobile ? '50px' : '32px' }}
-        >
-          评估风险
-        </Button>
-      </Form.Item>
     </Form>
   );
 };

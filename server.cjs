@@ -81,7 +81,7 @@ app.post('/api/ai/analyze', async (req, res) => {
 
     logRequest({ type: 'AI_ANALYZE_REQUEST', prompt, apiRequest });
 
-    const qwenKey = 'sk-d7ac5c693dc14eff8ec64bff80f146ab';
+    const qwenKey = process.env.QWEN_API_KEY || 'sk-d7ac5c693dc14eff8ec64bff80f146ab';
     const qwenUrl = 'https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation';
     
     const fetch = (await import('node-fetch')).default;
