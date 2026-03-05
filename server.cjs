@@ -116,17 +116,18 @@ app.post('/api/ai/analyze', async (req, res) => {
       };
 
       const sectionKeywords = {
-        riskInterpretation: ['风险解读', '1. 风险解读', '# 风险解读', '## 风险解读', '### 风险解读'],
-        advantages: ['优势分析', '2. 优势分析', '# 优势分析', '## 优势分析', '### 优势分析'],
-        threats: ['威胁识别', '3. 威胁识别', '# 威胁识别', '## 威胁识别', '### 威胁识别'],
-        opportunities: ['机会发现', '4. 机会发现', '# 机会发现', '## 机会发现', '### 机会发现'],
-        recommendations: ['具体建议', '5. 具体建议', '# 具体建议', '## 具体建议', '### 具体建议']
+        riskInterpretation: ['风险解读'],
+        advantages: ['优势分析'],
+        threats: ['威胁识别'],
+        opportunities: ['机会发现'],
+        recommendations: ['具体建议']
       };
 
       const lines = text.split('\n');
       let currentSection = null;
+      let isCollecting = false;
 
-      lines.forEach((line, index) => {
+      lines.forEach((line) => {
         const trimmedLine = line.trim();
         
         let foundSection = null;
@@ -142,12 +143,22 @@ app.post('/api/ai/analyze', async (req, res) => {
 
         if (foundSection) {
           currentSection = foundSection;
-          const contentAfterKeyword = trimmedLine.replace(/^#{1,3}\s*\d+\s*\.\s*/, '').replace(/^\*{1,2}/, '').replace(/^{keyword}/, '').trim();
-          if (contentAfterKeyword && contentAfterKeyword.length > 5) {
-            sections[currentSection] = contentAfterKeyword + '\n';
+          isCollecting = true;
+          const contentAfterKeyword = trimmedLine
+            .replace(/^#{1,3}\s*\d+\s*\.\s*/, '')
+            .replace(/^\*{1,2}/, '')
+            .replace(/风险解读|优势分析|威胁识别|机会发现|具体建议/, '')
+            .replace(/^[:：]\s*/, '')
+            .trim();
+          sections[currentSection] = contentAfterKeyword ? contentAfterKeyword + '\n' : '';
+        } else if (isCollecting && currentSection && trimmedLine) {
+          if (trimmedLine.match(/^#{1,3}\s*\d+\s*\./)) {
+            isCollecting = false;
+          } else if (!trimmedLine.startsWith('**') && !trimmedLine.startsWith('-') && trimmedLine.length > 0) {
+            sections[currentSection] += trimmedLine + '\n';
+          } else if (trimmedLine.startsWith('-') || trimmedLine.startsWith('*')) {
+            sections[currentSection] += trimmedLine + '\n';
           }
-        } else if (currentSection && trimmedLine && !trimmedLine.startsWith('#') && !trimmedLine.startsWith('**')) {
-          sections[currentSection] += trimmedLine + '\n';
         }
       });
 
