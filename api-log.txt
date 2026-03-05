@@ -1,0 +1,20 @@
+
+=== 2026-03-05T03:29:29.080Z ===
+{
+  "type": "PAYMENT_CREATE",
+  "body": {
+    "userId": "user_1772444584037_rifxat555",
+    "packageId": "single",
+    "paymentMethod": "mock"
+  }
+}
+
+=== 2026-03-05T05:08:12.160Z ===
+{
+  "type": "PAYMENT_CREATE",
+  "body": {
+    "userId": "user_1772444584037_rifxat555",
+    "packageId": "single",
+    "paymentMethod": "mock"
+  }
+}
