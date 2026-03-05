@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Card, Button, Spin, Alert, Collapse, message } from 'antd';
-import { RobotOutlined } from '@ant-design/icons';
+import { Card, Button, Spin, Alert, message, Tag, Divider } from 'antd';
+import { RobotOutlined, ThunderboltOutlined, SafetyOutlined, AlertOutlined, RiseOutlined, SolutionOutlined } from '@ant-design/icons';
 import { useMediaQuery } from 'react-responsive';
 
 const AIAnalysis = ({ assessmentResult }) => {
@@ -37,7 +37,8 @@ const AIAnalysis = ({ assessmentResult }) => {
       const data = await response.json();
 
       if (data.success && data.analysis) {
-        setAnalysis(data.analysis);
+        const parsedAnalysis = parseAnalysisData(data.analysis);
+        setAnalysis(parsedAnalysis);
         message.success('AI智能分析完成');
       } else {
         throw new Error(data.error || 'AI分析失败');
@@ -51,53 +52,121 @@ const AIAnalysis = ({ assessmentResult }) => {
     }
   };
 
-  if (!assessmentResult) {
-    return null;
-  }
-
-  const collapseItems = [
-    {
-      key: '1',
-      label: '📊 风险解读',
-      children: <p style={{ lineHeight: '1.8', whiteSpace: 'pre-wrap' }}>{analysis?.riskInterpretation}</p>
-    },
-    {
-      key: '2',
-      label: '💪 优势分析',
-      children: <p style={{ lineHeight: '1.8', whiteSpace: 'pre-wrap' }}>{analysis?.advantages}</p>
-    },
-    {
-      key: '3',
-      label: '⚠️ 威胁识别',
-      children: <p style={{ lineHeight: '1.8', whiteSpace: 'pre-wrap' }}>{analysis?.threats}</p>
-    },
-    {
-      key: '4',
-      label: '🚀 机会发现',
-      children: <p style={{ lineHeight: '1.8', whiteSpace: 'pre-wrap' }}>{analysis?.opportunities}</p>
-    },
-    {
-      key: '5',
-      label: '📋 具体建议',
-      children: <p style={{ lineHeight: '1.8', whiteSpace: 'pre-wrap' }}>{analysis?.recommendations}</p>
+  const parseAnalysisData = (data) => {
+    if (typeof data === 'string') {
+      try {
+        const cleaned = data.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+        const parsed = JSON.parse(cleaned);
+        return {
+          riskInterpretation: parsed.riskInterpretation || parsed.risk_interpretation || parsed.risk || '',
+          advantages: parsed.advantages || parsed.优势分析 || '',
+          threats: parsed.threats || parsed.threat || parsed.威胁识别 || '',
+          opportunities: parsed.opportunities || parsed.opportunity || parsed.机会发现 || '',
+          recommendations: parsed.recommendations || parsed.recommendation || parsed.具体建议 || parsed.suggestions || ''
+        };
+      } catch (e) {
+        return {
+          riskInterpretation: data,
+          advantages: '',
+          threats: '',
+          opportunities: '',
+          recommendations: ''
+        };
+      }
     }
-  ];
+    return data;
+  };
+
+  const renderSection = (icon, title, content, color) => {
+    if (!content) return null;
+    return (
+      <div style={{
+        background: 'linear-gradient(135deg, #fff 0%, #fafafa 100%)',
+        borderRadius: 16,
+        padding: 20,
+        marginBottom: 16,
+        border: '1px solid #f0f0f0',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: 12 }}>
+          <span style={{ 
+            fontSize: 20, 
+            marginRight: 10,
+            background: `${color}15`,
+            padding: 8,
+            borderRadius: 10
+          }}>{icon}</span>
+          <span style={{ 
+            fontSize: 16, 
+            fontWeight: 600,
+            color: '#333'
+          }}>{title}</span>
+        </div>
+        <div style={{ 
+          color: '#666', 
+          lineHeight: 1.8,
+          whiteSpace: 'pre-wrap',
+          wordBreak: 'break-word',
+          fontSize: 14
+        }}>
+          {content}
+        </div>
+      </div>
+    );
+  };
+
+  const getRiskLevel = () => {
+    if (!assessmentResult?.totalScore) return null;
+    const score = assessmentResult.totalScore;
+    if (score >= 80) return { level: '极高风险', color: '#ff4d4f', bg: '#fff2f0' };
+    if (score >= 60) return { level: '高风险', color: '#fa8c16', bg: '#fff7e6' };
+    if (score >= 40) return { level: '中等风险', color: '#faad14', bg: '#fffbe6' };
+    if (score >= 20) return { level: '低风险', color: '#52c41a', bg: '#f6ffed' };
+    return { level: '极低风险', color: '#1890ff', bg: '#e6f7ff' };
+  };
+
+  const riskInfo = getRiskLevel();
 
   return (
     <Card 
-      title={
-        <span>
-          <RobotOutlined /> AI智能分析 <span style={{ fontSize: '12px', color: '#999' }}>(通义千问驱动)</span>
-        </span>
-      } 
-      style={{ marginTop: 20 }}
+      style={{ 
+        marginTop: 20,
+        borderRadius: 20,
+        boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+        border: 'none'
+      }}
+      bodyStyle={{ padding: isMobile ? 16 : 24 }}
     >
+      <div style={{
+        textAlign: 'center',
+        marginBottom: 24
+      }}>
+        <div style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: 60,
+          height: 60,
+          borderRadius: '50%',
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          marginBottom: 12
+        }}>
+          <RobotOutlined style={{ fontSize: 28, color: '#fff' }} />
+        </div>
+        <div style={{ fontSize: 18, fontWeight: 600, color: '#333', marginBottom: 4 }}>
+          AI智能分析
+        </div>
+        <div style={{ fontSize: 12, color: '#999' }}>
+          通义千问驱动 · 深度解读
+        </div>
+      </div>
+
       {error && (
         <Alert 
           message={error} 
           type="error" 
           showIcon 
-          style={{ marginBottom: 15 }}
+          style={{ marginBottom: 15, borderRadius: 12 }}
           closable
           onClose={() => setError(null)}
         />
@@ -105,14 +174,24 @@ const AIAnalysis = ({ assessmentResult }) => {
       
       {!analysis && !loading && (
         <div style={{ textAlign: 'center', padding: '20px' }}>
-          <p style={{ marginBottom: 16 }}>
-            点击下方按钮，让<span style={{ color: '#1890ff', fontWeight: 'bold' }}>通义千问AI</span>为您深度分析职业风险
+          <p style={{ marginBottom: 20, color: '#666', fontSize: 14 }}>
+            点击下方按钮，让AI为您深度分析<br/>
+            <span style={{ color: '#667eea', fontWeight: 'bold' }}>职业风险</span>与<span style={{ color: '#764ba2', fontWeight: 'bold' }}>发展建议</span>
           </p>
           <Button 
-            type="primary" 
+            type="primary"
             size={isMobile ? 'large' : 'middle'}
             onClick={handleAnalyze}
-            icon={<RobotOutlined />}
+            icon={<ThunderboltOutlined />}
+            style={{
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              border: 'none',
+              borderRadius: 25,
+              height: 44,
+              paddingInline: 28,
+              fontWeight: 500,
+              boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)'
+            }}
           >
             开始AI分析
           </Button>
@@ -122,20 +201,68 @@ const AIAnalysis = ({ assessmentResult }) => {
       {loading && (
         <div style={{ textAlign: 'center', padding: '40px' }}>
           <Spin size="large" />
-          <p style={{ marginTop: 15 }}>通义千问AI正在分析中，请稍候...</p>
-          <p style={{ fontSize: '12px', color: '#999' }}>这可能需要几秒钟时间</p>
+          <div style={{ marginTop: 20 }}>
+            <div style={{ 
+              width: 40, 
+              height: 40, 
+              border: '3px solid #f3f3f3',
+              borderTop: '3px solid #667eea',
+              borderRadius: '50%',
+              animation: 'spin 1s linear infinite',
+              margin: '0 auto 16px'
+            }} />
+            <style>{`
+              @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+              }
+            `}</style>
+          </div>
+          <p style={{ marginTop: 15, color: '#666', fontWeight: 500 }}>AI正在深度分析中...</p>
+          <p style={{ fontSize: 12, color: '#999' }}>根据您的职业特点生成个性化报告</p>
         </div>
       )}
       
       {analysis && (
-        <Collapse defaultActiveKey={['1', '2', '3', '4', '5']} items={collapseItems} />
-      )}
+        <div>
+          {riskInfo && (
+            <div style={{
+              background: riskInfo.bg,
+              borderRadius: 12,
+              padding: '12px 20px',
+              marginBottom: 20,
+              textAlign: 'center',
+              border: `1px solid ${riskInfo.color}30`
+            }}>
+              <Tag color={riskInfo.color} style={{ borderRadius: 20, fontSize: 14, padding: '4px 16px' }}>
+                {riskInfo.level}
+              </Tag>
+              <span style={{ marginLeft: 10, color: '#666', fontSize: 13 }}>
+                风险指数：{assessmentResult?.totalScore || 0}分
+              </span>
+            </div>
+          )}
 
-      {analysis && (
-        <div style={{ marginTop: 16, textAlign: 'center' }}>
-          <Button onClick={() => setAnalysis(null)}>
-            重新分析
-          </Button>
+          {renderSection(<SafetyOutlined />, '📊 风险解读', analysis.riskInterpretation, '#667eea')}
+          {renderSection(<AlertOutlined />, '💪 优势分析', analysis.advantages, '#52c41a')}
+          {renderSection(<AlertOutlined style={{ color: '#fa8c16' }} />, '⚠️ 威胁识别', analysis.threats, '#fa8c16')}
+          {renderSection(<RiseOutlined />, '🚀 机会发现', analysis.opportunities, '#1890ff')}
+          {renderSection(<SolutionOutlined />, '📋 具体建议', analysis.recommendations, '#764ba2')}
+
+          <Divider style={{ margin: '20px 0' }} />
+          
+          <div style={{ textAlign: 'center' }}>
+            <Button 
+              onClick={() => setAnalysis(null)}
+              style={{
+                borderRadius: 20,
+                borderColor: '#667eea',
+                color: '#667eea'
+              }}
+            >
+              🔄 重新分析
+            </Button>
+          </div>
         </div>
       )}
     </Card>
