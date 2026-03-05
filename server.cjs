@@ -114,44 +114,43 @@ app.post('/api/ai/analyze', async (req, res) => {
         opportunities: '',
         recommendations: ''
       };
-      
-      const patterns = [
-        { key: 'riskInterpretation', pattern: /(?:###\s*\d+\s*\.?\s*|\*\*)?风险解读\*\*?[:：]?\s*([\s\S]*?)(?=(?:###\s*\d+\s*\.?\s*|\*\*)(?:优势分析|威胁识别|机会发现|具体建议)|$)/i },
-        { key: 'advantages', pattern: /(?:###\s*\d+\s*\.?\s*|\*\*)?优势分析\*\*?[:：]?\s*([\s\S]*?)(?=(?:###\s*\d+\s*\.?\s*|\*\*)(?:风险解读|威胁识别|机会发现|具体建议)|$)/i },
-        { key: 'threats', pattern: /(?:###\s*\d+\s*\.?\s*|\*\*)?威胁识别\*\*?[:：]?\s*([\s\S]*?)(?=(?:###\s*\d+\s*\.?\s*|\*\*)(?:风险解读|优势分析|机会发现|具体建议)|$)/i },
-        { key: 'opportunities', pattern: /(?:###\s*\d+\s*\.?\s*|\*\*)?机会发现\*\*?[:：]?\s*([\s\S]*?)(?=(?:###\s*\d+\s*\.?\s*|\*\*)(?:风险解读|优势分析|威胁识别|具体建议)|$)/i },
-        { key: 'recommendations', pattern: /(?:###\s*\d+\s*\.?\s*|\*\*)?具体建议\*\*?[:：]?\s*([\s\S]*)/i }
-      ];
-      
-      patterns.forEach(({ key, pattern }) => {
-        const match = text.match(pattern);
-        if (match && match[1]) {
-          sections[key] = match[1].trim();
+
+      const sectionKeywords = {
+        riskInterpretation: ['风险解读', '1. 风险解读', '# 风险解读', '## 风险解读', '### 风险解读'],
+        advantages: ['优势分析', '2. 优势分析', '# 优势分析', '## 优势分析', '### 优势分析'],
+        threats: ['威胁识别', '3. 威胁识别', '# 威胁识别', '## 威胁识别', '### 威胁识别'],
+        opportunities: ['机会发现', '4. 机会发现', '# 机会发现', '## 机会发现', '### 机会发现'],
+        recommendations: ['具体建议', '5. 具体建议', '# 具体建议', '## 具体建议', '### 具体建议']
+      };
+
+      const lines = text.split('\n');
+      let currentSection = null;
+
+      lines.forEach((line, index) => {
+        const trimmedLine = line.trim();
+        
+        let foundSection = null;
+        for (const [section, keywords] of Object.entries(sectionKeywords)) {
+          for (const keyword of keywords) {
+            if (trimmedLine.includes(keyword)) {
+              foundSection = section;
+              break;
+            }
+          }
+          if (foundSection) break;
+        }
+
+        if (foundSection) {
+          currentSection = foundSection;
+          const contentAfterKeyword = trimmedLine.replace(/^#{1,3}\s*\d+\s*\.\s*/, '').replace(/^\*{1,2}/, '').replace(/^{keyword}/, '').trim();
+          if (contentAfterKeyword && contentAfterKeyword.length > 5) {
+            sections[currentSection] = contentAfterKeyword + '\n';
+          }
+        } else if (currentSection && trimmedLine && !trimmedLine.startsWith('#') && !trimmedLine.startsWith('**')) {
+          sections[currentSection] += trimmedLine + '\n';
         }
       });
-      
-      if (!sections.riskInterpretation && !sections.advantages) {
-        const lines = text.split('\n');
-        let currentSection = '';
-        lines.forEach(line => {
-          const trimmedLine = line.trim();
-          
-          if (trimmedLine.match(/^#{1,3}\s*\d+\s*\.\s*风险解读|^\d+\.\s*风险解读/)) {
-            currentSection = 'riskInterpretation';
-          } else if (trimmedLine.match(/^#{1,3}\s*\d+\s*\.\s*优势分析|^\d+\.\s*优势分析/)) {
-            currentSection = 'advantages';
-          } else if (trimmedLine.match(/^#{1,3}\s*\d+\s*\.\s*威胁识别|^\d+\.\s*威胁识别/)) {
-            currentSection = 'threats';
-          } else if (trimmedLine.match(/^#{1,3}\s*\d+\s*\.\s*机会发现|^\d+\.\s*机会发现/)) {
-            currentSection = 'opportunities';
-          } else if (trimmedLine.match(/^#{1,3}\s*\d+\s*\.\s*具体建议|^\d+\.\s*具体建议/)) {
-            currentSection = 'recommendations';
-          } else if (currentSection && trimmedLine && !trimmedLine.startsWith('#')) {
-            sections[currentSection] += trimmedLine + '\n';
-          }
-        });
-      }
-      
+
       return sections;
     };
     
