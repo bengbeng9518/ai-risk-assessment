@@ -116,16 +116,16 @@ app.post('/api/ai/analyze', async (req, res) => {
       };
       
       const patterns = [
-        { key: 'riskInterpretation', pattern: /\*\*风险解读\*\*[:：]?([\s\S]*?)(?=\*\*|$)/i },
-        { key: 'advantages', pattern: /\*\*优势分析\*\*[:：]?([\s\S]*?)(?=\*\*|$)/i },
-        { key: 'threats', pattern: /\*\*威胁识别\*\*[:：]?([\s\S]*?)(?=\*\*|$)/i },
-        { key: 'opportunities', pattern: /\*\*机会发现\*\*[:：]?([\s\S]*?)(?=\*\*|$)/i },
-        { key: 'recommendations', pattern: /\*\*具体建议\*\*[:：]?([\s\S]*)/i }
+        { key: 'riskInterpretation', pattern: /(?:###\s*\d+\s*\.?\s*|\*\*)?风险解读\*\*?[:：]?\s*([\s\S]*?)(?=(?:###\s*\d+\s*\.?\s*|\*\*)(?:优势分析|威胁识别|机会发现|具体建议)|$)/i },
+        { key: 'advantages', pattern: /(?:###\s*\d+\s*\.?\s*|\*\*)?优势分析\*\*?[:：]?\s*([\s\S]*?)(?=(?:###\s*\d+\s*\.?\s*|\*\*)(?:风险解读|威胁识别|机会发现|具体建议)|$)/i },
+        { key: 'threats', pattern: /(?:###\s*\d+\s*\.?\s*|\*\*)?威胁识别\*\*?[:：]?\s*([\s\S]*?)(?=(?:###\s*\d+\s*\.?\s*|\*\*)(?:风险解读|优势分析|机会发现|具体建议)|$)/i },
+        { key: 'opportunities', pattern: /(?:###\s*\d+\s*\.?\s*|\*\*)?机会发现\*\*?[:：]?\s*([\s\S]*?)(?=(?:###\s*\d+\s*\.?\s*|\*\*)(?:风险解读|优势分析|威胁识别|具体建议)|$)/i },
+        { key: 'recommendations', pattern: /(?:###\s*\d+\s*\.?\s*|\*\*)?具体建议\*\*?[:：]?\s*([\s\S]*)/i }
       ];
       
       patterns.forEach(({ key, pattern }) => {
         const match = text.match(pattern);
-        if (match) {
+        if (match && match[1]) {
           sections[key] = match[1].trim();
         }
       });
@@ -134,14 +134,20 @@ app.post('/api/ai/analyze', async (req, res) => {
         const lines = text.split('\n');
         let currentSection = '';
         lines.forEach(line => {
-          if (line.includes('风险解读') || line.includes('1.')) currentSection = 'riskInterpretation';
-          else if (line.includes('优势分析') || line.includes('2.')) currentSection = 'advantages';
-          else if (line.includes('威胁识别') || line.includes('3.')) currentSection = 'threats';
-          else if (line.includes('机会发现') || line.includes('4.')) currentSection = 'opportunities';
-          else if (line.includes('具体建议') || line.includes('5.')) currentSection = 'recommendations';
+          const trimmedLine = line.trim();
           
-          if (currentSection && line.trim() && !line.includes('**')) {
-            sections[currentSection] += line.trim() + '\n';
+          if (trimmedLine.match(/^#{1,3}\s*\d+\s*\.\s*风险解读|^\d+\.\s*风险解读/)) {
+            currentSection = 'riskInterpretation';
+          } else if (trimmedLine.match(/^#{1,3}\s*\d+\s*\.\s*优势分析|^\d+\.\s*优势分析/)) {
+            currentSection = 'advantages';
+          } else if (trimmedLine.match(/^#{1,3}\s*\d+\s*\.\s*威胁识别|^\d+\.\s*威胁识别/)) {
+            currentSection = 'threats';
+          } else if (trimmedLine.match(/^#{1,3}\s*\d+\s*\.\s*机会发现|^\d+\.\s*机会发现/)) {
+            currentSection = 'opportunities';
+          } else if (trimmedLine.match(/^#{1,3}\s*\d+\s*\.\s*具体建议|^\d+\.\s*具体建议/)) {
+            currentSection = 'recommendations';
+          } else if (currentSection && trimmedLine && !trimmedLine.startsWith('#')) {
+            sections[currentSection] += trimmedLine + '\n';
           }
         });
       }
