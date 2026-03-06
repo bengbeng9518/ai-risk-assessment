@@ -11,7 +11,7 @@ const AIAnalysis = ({ assessmentResult, autoRun = false }) => {
   const isMobile = useMediaQuery({ maxWidth: 768 });
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
-  const apiUrl = API_BASE_URL ? `${API_BASE_URL}/api/ai/analyze` : '/api/ai/analyze/';
+  const apiUrl = API_BASE_URL ? `${API_BASE_URL}/api/ai/analyze` : '/api/ai/analyze';
 
   useEffect(() => {
     if (autoRun && assessmentResult && !analysis && !loading) {
