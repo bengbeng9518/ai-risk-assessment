@@ -12,7 +12,7 @@ html, body {
 
 body {
   overflow-x: hidden;
-  background: #0a0a0a;
+  background: #0a0a12;
 }
 
 #root {
@@ -81,9 +81,9 @@ body {
 
 .ant-input,
 .ant-select-selector {
-  background: rgba(255, 255, 255, 0.05) !important;
-  border: 1px solid rgba(0, 212, 255, 0.2) !important;
-  color: #e0e0e0 !important;
+  background: rgba(30, 30, 50, 0.8) !important;
+  border: 1px solid rgba(0, 212, 255, 0.3) !important;
+  color: #ffffff !important;
   transition: all 0.3s ease !important;
 }
 
@@ -96,11 +96,11 @@ body {
 }
 
 .ant-input::placeholder {
-  color: #636e72 !important;
+  color: #808090 !important;
 }
 
 .ant-select-selection-placeholder {
-  color: #636e72 !important;
+  color: #808090 !important;
 }
 
 .ant-collapse {
@@ -115,21 +115,21 @@ body {
 }
 
 .ant-collapse-header {
-  color: #e0e0e0 !important;
-  font-weight: 500 !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
 }
 
 .ant-collapse-content {
-  background: rgba(0, 0, 0, 0.2) !important;
-  color: #a0a0a0 !important;
+  background: rgba(20, 20, 35, 0.6) !important;
+  color: #c0c0d0 !important;
 }
 
 .ant-typography {
-  color: #e0e0e0 !important;
+  color: #ffffff !important;
 }
 
 .ant-typography-secondary {
-  color: #a0a0a0 !important;
+  color: #b0b0c0 !important;
 }
 
 .ant-divider {
@@ -162,11 +162,11 @@ body {
 }
 
 .ant-modal-title {
-  color: #e0e0e0 !important;
+  color: #ffffff !important;
 }
 
 .ant-modal-close {
-  color: #a0a0a0 !important;
+  color: #b0b0c0 !important;
 }
 
 .ant-modal-close:hover {

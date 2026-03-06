@@ -16,18 +16,20 @@ const theme = {
   primary: '#00d4ff',
   secondary: '#7b2cbf',
   accent: '#ff006e',
-  gradient: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%)',
+  gradient: 'linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%)',
   headerGradient: 'linear-gradient(135deg, #00d4ff 0%, #7b2cbf 50%, #ff006e 100%)',
-  cardGradient: 'linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(123, 44, 191, 0.1) 100%)',
+  cardGradient: 'linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(123, 44, 191, 0.08) 100%)',
   glowBlue: '0 0 20px rgba(0, 212, 255, 0.3)',
   glowPurple: '0 0 20px rgba(123, 44, 191, 0.3)',
   softPink: '#fff0f3',
   softPurple: '#f3f0ff',
-  textDark: '#e0e0e0',
-  textGray: '#a0a0a0',
-  bgDark: '#0a0a0a',
-  cardBg: 'rgba(255, 255, 255, 0.03)',
-  borderGlow: '1px solid rgba(0, 212, 255, 0.2)'
+  textDark: '#ffffff',
+  textLight: '#f0f0f0',
+  textGray: '#b0b0c0',
+  textMuted: '#808090',
+  bgDark: '#0a0a12',
+  cardBg: 'rgba(20, 20, 35, 0.8)',
+  borderGlow: '1px solid rgba(0, 212, 255, 0.3)'
 };
 
 function App() {
