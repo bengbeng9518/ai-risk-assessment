@@ -27,21 +27,21 @@ export const onRequestPost = async ({ request }) => {
     const { career, riskScore, riskLevel, breakdown } = assessmentResult;
     console.log('Processing:', career);
 
-    const prompt = `作为职业规划专家，请分析职业"${career}"的AI替代风险（风险评分${riskScore}，等级${riskLevel}）。请严格按照以下格式回答：
+    const prompt = `作为职业规划专家，请分析职业"${career}"的AI替代风险（风险评分${riskScore}，等级${riskLevel}）。请严格按照以下格式回答，必须包含5个部分：
 
-【风险解读】
+风险解读：
 （详细解释该职业面临AI替代风险的主要原因）
 
-【优势分析】
+优势分析：
 （该职业在AI时代仍具有的核心优势）
 
-【威胁识别】
+威胁识别：
 （未来3-5年可能面临的最大威胁）
 
-【机会发现】
+机会发现：
 （AI技术带来的新机会和发展方向）
 
-【具体建议】
+具体建议：
 （3-5条可执行的职业发展建议）`;
 
     const apiRequest = {
@@ -50,7 +50,7 @@ export const onRequestPost = async ({ request }) => {
         messages: [
           {
             role: 'system',
-            content: '你是职业规划专家，擅长分析AI对职业的影响。请严格按照用户要求的格式回答。'
+            content: '你是职业规划专家，擅长分析AI对职业的影响。请严格按照用户要求的格式回答，必须包含5个部分。'
           },
           {
             role: 'user',
@@ -99,11 +99,11 @@ export const onRequestPost = async ({ request }) => {
       }
 
       const analysisText = data.output?.choices?.[0]?.message?.content || '';
+      console.log('Raw AI response:', analysisText.substring(0, 500));
       
       // 解析文本为结构化数据
       const parsedAnalysis = parseAnalysis(analysisText);
-      
-      console.log('Analysis complete');
+      console.log('Parsed analysis:', JSON.stringify(parsedAnalysis));
       
       return new Response(JSON.stringify({
         success: true,
@@ -146,23 +146,28 @@ function parseAnalysis(text) {
     recommendations: ''
   };
 
+  // 尝试多种可能的格式
   const patterns = {
-    riskInterpretation: /【风险解读】\s*\n?([\s\S]*?)(?=【|$)/,
-    advantages: /【优势分析】\s*\n?([\s\S]*?)(?=【|$)/,
-    threats: /【威胁识别】\s*\n?([\s\S]*?)(?=【|$)/,
-    opportunities: /【机会发现】\s*\n?([\s\S]*?)(?=【|$)/,
-    recommendations: /【具体建议】\s*\n?([\s\S]*?)(?=【|$)/
+    riskInterpretation: [/风险解读[：:]\s*\n?([\s\S]*?)(?=\n?优势分析[：:]|\n?威胁识别[：:]|\n?机会发现[：:]|\n?具体建议[：:]|$)/i],
+    advantages: [/优势分析[：:]\s*\n?([\s\S]*?)(?=\n?风险解读[：:]|\n?威胁识别[：:]|\n?机会发现[：:]|\n?具体建议[：:]|$)/i],
+    threats: [/威胁识别[：:]\s*\n?([\s\S]*?)(?=\n?风险解读[：:]|\n?优势分析[：:]|\n?机会发现[：:]|\n?具体建议[：:]|$)/i],
+    opportunities: [/机会发现[：:]\s*\n?([\s\S]*?)(?=\n?风险解读[：:]|\n?优势分析[：:]|\n?威胁识别[：:]|\n?具体建议[：:]|$)/i],
+    recommendations: [/具体建议[：:]\s*\n?([\s\S]*?)(?=\n?风险解读[：:]|\n?优势分析[：:]|\n?威胁识别[：:]|\n?机会发现[：:]|$)/i]
   };
 
-  for (const [key, pattern] of Object.entries(patterns)) {
-    const match = text.match(pattern);
-    if (match) {
-      sections[key] = match[1].trim();
+  for (const [key, patternList] of Object.entries(patterns)) {
+    for (const pattern of patternList) {
+      const match = text.match(pattern);
+      if (match && match[1].trim()) {
+        sections[key] = match[1].trim();
+        break;
+      }
     }
   }
 
-  // 如果没有匹配到格式，将整个文本作为风险解读
-  if (!sections.riskInterpretation && text) {
+  // 如果没有匹配到任何格式，将整个文本作为风险解读
+  if (!sections.riskInterpretation && !sections.advantages && !sections.threats && 
+      !sections.opportunities && !sections.recommendations && text) {
     sections.riskInterpretation = text;
   }
 
