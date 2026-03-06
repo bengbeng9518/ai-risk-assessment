@@ -1,4 +1,4 @@
-export function onRequestGet(context) {
+export async function onRequest(context) {
   return new Response(JSON.stringify({ 
     message: 'Node Functions working!',
     timestamp: new Date().toISOString()

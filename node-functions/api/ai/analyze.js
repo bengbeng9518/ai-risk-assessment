@@ -1,6 +1,20 @@
-export async function onRequestPost(context) {
+export async function onRequest(context) {
   const { request } = context;
   
+  if (request.method === 'POST') {
+    return handleAnalyze(request);
+  }
+  
+  return new Response(JSON.stringify({ 
+    message: 'Node Functions working!',
+    method: request.method
+  }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
+
+async function handleAnalyze(request) {
   try {
     let assessmentResult;
     try {
@@ -22,7 +36,7 @@ export async function onRequestPost(context) {
 
     const { career, riskScore, riskLevel, breakdown } = assessmentResult;
 
-    const prompt = `你是一位资深的职业规划专家和AI技术顾问。请基于以下职业评估结果，提供深度分析：
+    const prompt = `你是一位资深的职业规划专家。请基于以下职业评估结果，提供深度分析：
     职业名称：${career}
     风险评分：${riskScore}
     风险等级：${riskLevel}
@@ -84,71 +98,9 @@ export async function onRequestPost(context) {
 
     const analysisText = data.output?.choices?.[0]?.message?.content || '';
     
-    const parseResponse = (text) => {
-      const sections = {
-        riskInterpretation: '',
-        advantages: '',
-        threats: '',
-        opportunities: '',
-        recommendations: ''
-      };
-
-      const sectionKeywords = {
-        riskInterpretation: ['风险解读'],
-        advantages: ['优势分析'],
-        threats: ['威胁识别'],
-        opportunities: ['机会发现'],
-        recommendations: ['具体建议']
-      };
-
-      const lines = text.split('\n');
-      let currentSection = null;
-      let isCollecting = false;
-
-      lines.forEach((line) => {
-        const trimmedLine = line.trim();
-        
-        let foundSection = null;
-        for (const [section, keywords] of Object.entries(sectionKeywords)) {
-          for (const keyword of keywords) {
-            if (trimmedLine.includes(keyword)) {
-              foundSection = section;
-              break;
-            }
-          }
-          if (foundSection) break;
-        }
-
-        if (foundSection) {
-          currentSection = foundSection;
-          isCollecting = true;
-          const contentAfterKeyword = trimmedLine
-            .replace(/^#{1,3}\s*\d+\s*\.\s*/, '')
-            .replace(/^\*{1,2}/, '')
-            .replace(/风险解读|优势分析|威胁识别|机会发现|具体建议/, '')
-            .replace(/^[:：]\s*/, '')
-            .trim();
-          sections[currentSection] = contentAfterKeyword ? contentAfterKeyword + '\n' : '';
-        } else if (isCollecting && currentSection && trimmedLine) {
-          if (trimmedLine.match(/^#{1,3}\s*\d+\s*\./)) {
-            isCollecting = false;
-          } else if (!trimmedLine.startsWith('**') && !trimmedLine.startsWith('-') && trimmedLine.length > 0) {
-            sections[currentSection] += trimmedLine + '\n';
-          } else if (trimmedLine.startsWith('-') || trimmedLine.startsWith('*')) {
-            sections[currentSection] += trimmedLine + '\n';
-          }
-        }
-      });
-
-      return sections;
-    };
-    
-    const analysisResult = parseResponse(analysisText);
-    
     return new Response(JSON.stringify({
       success: true,
-      analysis: analysisResult,
-      rawResponse: analysisText
+      analysis: analysisText
     }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
