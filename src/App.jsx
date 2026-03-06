@@ -164,7 +164,7 @@ function App() {
                   AI职业风险评估
                 </Title>
                 <Paragraph style={{ color: theme.textGray, fontSize: 14, marginBottom: 0, lineHeight: 1.6 }}>
-                  探索AI时代下你的职业前景<br/>科学数据驱动的智能分析
+                  AI时代，你的工作还安全吗<br/>科学数据分析，精准预见职业未来
                 </Paragraph>
               </div>
 
