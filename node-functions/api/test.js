@@ -1,4 +1,4 @@
-export default function onRequest(context) {
+export const onRequestGet = async ({ request }) => {
   return new Response(JSON.stringify({ 
     message: 'Node Functions working!',
     timestamp: new Date().toISOString()
@@ -6,4 +6,4 @@ export default function onRequest(context) {
     status: 200,
     headers: { 'Content-Type': 'application/json' }
   });
-}
+};

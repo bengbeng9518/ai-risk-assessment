@@ -1,20 +1,14 @@
-export default function onRequest(context) {
-  const { request } = context;
-  
-  if (request.method === 'POST') {
-    return handleAnalyze(request);
-  }
-  
+export const onRequestGet = async ({ request }) => {
   return new Response(JSON.stringify({ 
-    message: 'Node Functions working!',
-    method: request.method
+    message: 'Node Functions GET working!',
+    timestamp: new Date().toISOString()
   }), {
     status: 200,
     headers: { 'Content-Type': 'application/json' }
   });
-}
+};
 
-async function handleAnalyze(request) {
+export const onRequestPost = async ({ request }) => {
   try {
     let assessmentResult;
     try {
@@ -113,4 +107,4 @@ async function handleAnalyze(request) {
       headers: { 'Content-Type': 'application/json' }
     });
   }
-}
+};
