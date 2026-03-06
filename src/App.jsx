@@ -13,14 +13,21 @@ const { Header, Content, Footer } = Layout;
 const { Title, Text, Paragraph } = Typography;
 
 const theme = {
-  primary: '#ff4757',
-  secondary: '#ff6b81',
-  gradient: 'linear-gradient(135deg, #ff4757 0%, #ff6b81 50%, #ffa502 100%)',
-  cardGradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+  primary: '#00d4ff',
+  secondary: '#7b2cbf',
+  accent: '#ff006e',
+  gradient: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%)',
+  headerGradient: 'linear-gradient(135deg, #00d4ff 0%, #7b2cbf 50%, #ff006e 100%)',
+  cardGradient: 'linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(123, 44, 191, 0.1) 100%)',
+  glowBlue: '0 0 20px rgba(0, 212, 255, 0.3)',
+  glowPurple: '0 0 20px rgba(123, 44, 191, 0.3)',
   softPink: '#fff0f3',
   softPurple: '#f3f0ff',
-  textDark: '#2d3436',
-  textGray: '#636e72'
+  textDark: '#e0e0e0',
+  textGray: '#a0a0a0',
+  bgDark: '#0a0a0a',
+  cardBg: 'rgba(255, 255, 255, 0.03)',
+  borderGlow: '1px solid rgba(0, 212, 255, 0.2)'
 };
 
 function App() {
@@ -91,82 +98,136 @@ function App() {
   };
 
   return (
-    <Layout style={{ minHeight: '100vh', background: '#fafafa' }}>
+    <Layout style={{ minHeight: '100vh', background: theme.bgDark }}>
       <Header style={{ 
-        background: theme.gradient, 
-        padding: '0 20px',
-        boxShadow: '0 2px 8px rgba(255, 71, 87, 0.15)',
+        background: theme.headerGradient, 
+        padding: '0 16px',
+        boxShadow: theme.glowBlue,
         position: 'sticky',
         top: 0,
-        zIndex: 100
+        zIndex: 100,
+        backdropFilter: 'blur(10px)'
       }}>
         <div style={{ maxWidth: 1000, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span style={{ fontSize: 24 }}>🔮</span>
-            <Title level={4} style={{ color: 'white', margin: 0, fontWeight: 600 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ fontSize: 20 }}>🤖</span>
+            <Title level={4} style={{ color: 'white', margin: 0, fontWeight: 600, fontSize: '16px' }}>
               AI职业风险评估
             </Title>
           </div>
-          <Text style={{ color: 'rgba(255,255,255,0.9)', fontSize: 12 }}>
+          <Text style={{ color: 'rgba(255,255,255,0.9)', fontSize: 11 }}>
             你的职业安全吗？
           </Text>
         </div>
       </Header>
       
-      <Content style={{ padding: '24px 16px', paddingBottom: 80 }}>
+      <Content style={{ padding: '16px 12px', paddingBottom: 100 }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           
-          <Card 
-            style={{ 
-              borderRadius: 16, 
-              marginBottom: 20,
-              border: 'none',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
-              position: 'sticky',
-              top: 68,
-              zIndex: 50
-            }}
-            bodyStyle={{ padding: 24 }}
-          >
-            <div style={{ textAlign: 'center', marginBottom: 16 }}>
-              <Title level={3} style={{ marginBottom: 8, color: theme.textDark }}>
-                🔥 测试你的职业会被AI替代吗？
-              </Title>
-              <Paragraph style={{ color: theme.textGray, fontSize: 15, marginBottom: 0 }}>
-                AI时代来了，你的岗位还安全吗？用科学数据说话！
-              </Paragraph>
-            </div>
-            
-            <div style={{ display: 'flex', justifyContent: 'center', gap: 24, flexWrap: 'wrap' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: theme.textGray }}>
-                <StarOutlined style={{ color: theme.primary }} />
-                <Text style={{ fontSize: 13 }}>智能分析</Text>
+          {!selectedCareer && (
+            <Card
+              style={{
+                borderRadius: 20,
+                marginBottom: 24,
+                border: theme.borderGlow,
+                boxShadow: theme.glowBlue,
+                background: theme.cardGradient,
+                backdropFilter: 'blur(10px)'
+              }}
+              bodyStyle={{ padding: '20px 16px' }}
+            >
+              <div style={{ textAlign: 'center', marginBottom: 20 }}>
+                <div style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: '50%',
+                  background: theme.headerGradient,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 16px',
+                  boxShadow: theme.glowBlue
+                }}>
+                  <span style={{ fontSize: 28 }}>🤖</span>
+                </div>
+                <Title level={3} style={{
+                  marginBottom: 12,
+                  color: theme.textDark,
+                  fontSize: '20px',
+                  fontWeight: 700,
+                  background: theme.headerGradient,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent'
+                }}>
+                  AI职业风险评估
+                </Title>
+                <Paragraph style={{ color: theme.textGray, fontSize: 14, marginBottom: 0, lineHeight: 1.6 }}>
+                  探索AI时代下你的职业前景<br/>科学数据驱动的智能分析
+                </Paragraph>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: theme.textGray }}>
-                <RocketOutlined style={{ color: theme.secondary }} />
-                <Text style={{ fontSize: 13 }}>精准评估</Text>
+
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(3, 1fr)',
+                gap: 12
+              }}>
+                {[
+                  { icon: '⚡', text: '智能分析', color: theme.primary },
+                  { icon: '🎯', text: '精准评估', color: theme.secondary },
+                  { icon: '🛡️', text: '专业可靠', color: theme.accent }
+                ].map((item, index) => (
+                  <div key={index} style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: 6,
+                    padding: '12px 8px',
+                    borderRadius: 12,
+                    background: 'rgba(255,255,255,0.05)',
+                    border: `1px solid ${item.color}30`
+                  }}>
+                    <span style={{ fontSize: 20 }}>{item.icon}</span>
+                    <Text style={{ fontSize: 12, color: theme.textGray }}>{item.text}</Text>
+                  </div>
+                ))}
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: theme.textGray }}>
-                <SafetyCertificateOutlined style={{ color: '#ffa502' }} />
-                <Text style={{ fontSize: 13 }}>专业可靠</Text>
-              </div>
-            </div>
-          </Card>
+            </Card>
+          )}
 
           <UsageDisplay onBuy={() => setPurchaseModalVisible(true)} />
-          
-          <Card 
-            style={{ 
-              borderRadius: 16, 
-              marginBottom: 20,
-              border: 'none',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.08)'
+
+          <Card
+            style={{
+              borderRadius: 20,
+              marginBottom: 24,
+              border: theme.borderGlow,
+              boxShadow: theme.glowPurple,
+              background: theme.cardBg
             }}
-            bodyStyle={{ padding: 24 }}
+            bodyStyle={{ padding: '20px 16px' }}
           >
-            <Title level={5} style={{ marginBottom: 16, color: theme.textDark }}>
-              📋 选择你的职业
-            </Title>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              marginBottom: 20
+            }}>
+              <div style={{
+                width: 8,
+                height: 8,
+                borderRadius: '50%',
+                background: theme.primary,
+                boxShadow: `0 0 10px ${theme.primary}`
+              }} />
+              <Title level={5} style={{
+                margin: 0,
+                color: theme.textDark,
+                fontSize: '16px',
+                fontWeight: 600
+              }}>
+                选择你的职业
+              </Title>
+            </div>
             <CareerForm onAssess={() => handleAssess(false)} onCareerSelect={handleCareerSelect} />
           </Card>
           
