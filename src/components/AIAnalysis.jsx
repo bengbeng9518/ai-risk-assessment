@@ -45,11 +45,14 @@ const AIAnalysis = ({ assessmentResult, autoRun = false }) => {
       }
 
       const data = await response.json();
+      console.log('API Response:', data);
 
       if (data.success && data.analysis) {
+        console.log('Setting analysis:', data.analysis);
         setAnalysis(data.analysis);
         message.success('AI智能分析完成');
       } else {
+        console.error('API Error:', data);
         throw new Error(data.error || 'AI分析失败');
       }
     } catch (err) {
