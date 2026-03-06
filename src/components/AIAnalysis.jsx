@@ -10,6 +10,9 @@ const AIAnalysis = ({ assessmentResult, autoRun = false }) => {
   const [error, setError] = useState(null);
   const isMobile = useMediaQuery({ maxWidth: 768 });
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+  const apiUrl = API_BASE_URL ? `${API_BASE_URL}/api/ai/analyze` : '/api/ai/analyze';
+
   useEffect(() => {
     if (autoRun && assessmentResult && !analysis && !loading) {
       handleAnalyze();
@@ -26,7 +29,7 @@ const AIAnalysis = ({ assessmentResult, autoRun = false }) => {
     setError(null);
     
     try {
-      const response = await fetch('http://localhost:3001/api/ai/analyze', {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

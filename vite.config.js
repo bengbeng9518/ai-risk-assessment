@@ -11,5 +11,8 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false
+  },
+  define: {
+    'process.env.API_BASE_URL': JSON.stringify(process.env.API_BASE_URL || '')
   }
 })

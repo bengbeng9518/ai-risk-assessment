@@ -1,0 +1,5 @@
+[33m031aab2[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m feat: update AI workflow and usage tracking
+[33m04f96d1[m fix: use qwen-plus model
+[33ma3dc27b[m fix: collect all content including bullet points
+[33m2acbc41[m fix: rewrite AI response parser - line by line approach
+[33m6875842[m fix: improve AI response parsing for markdown format
