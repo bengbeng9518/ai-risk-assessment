@@ -27,30 +27,22 @@ export const onRequestPost = async ({ request }) => {
     const { career, riskScore, riskLevel, breakdown } = assessmentResult;
     console.log('Processing:', career);
 
-    const prompt = `你是一位资深的职业规划专家。请基于以下职业评估结果，提供深度分析：
-    职业名称：${career}
-    风险评分：${riskScore}
-    风险等级：${riskLevel}
-    各维度得分：
-    - 任务自动化潜力：${breakdown?.automation || 0}分
-    - 技能复杂度：${breakdown?.skillComplexity || 0}分
-    - 数据可获得性：${breakdown?.dataAvailability || 0}分
-    - 技术成熟度：${breakdown?.techMaturity || 0}分
-    
-    请从以下几个方面进行分析，要求用中文回答：
-    1. **风险解读**：详细解释该职业面临AI替代风险的主要原因
-    2. **优势分析**：该职业在AI时代仍具有的核心优势
-    3. **威胁识别**：未来3-5年可能面临的最大威胁
-    4. **机会发现**：AI技术带来的新机会和发展方向
-    5. **具体建议**：3-5条可执行的职业发展建议`;
+    // 简化提示词，减少AI处理时间
+    const prompt = `作为职业规划专家，请简要分析职业"${career}"的AI替代风险（风险评分${riskScore}，等级${riskLevel}）：
+1. 风险解读：为什么面临AI替代风险
+2. 核心优势：AI时代仍具优势
+3. 未来威胁：3-5年最大威胁
+4. 新机会：AI带来的发展方向
+5. 具体建议：3条可执行建议
+请用中文回答，简洁明了。`;
 
     const apiRequest = {
-      model: 'qwen-plus',
+      model: 'qwen-turbo',  // 使用更快的模型
       input: {
         messages: [
           {
             role: 'system',
-            content: '你是一位资深的职业规划专家和AI技术顾问，擅长分析职业发展趋势和AI对职场的影响。'
+            content: '你是职业规划专家，擅长分析AI对职业的影响。'
           },
           {
             role: 'user',
@@ -60,7 +52,7 @@ export const onRequestPost = async ({ request }) => {
       },
       parameters: {
         temperature: 0.7,
-        max_tokens: 2000,
+        max_tokens: 1500,  // 减少token数量
         result_format: 'message'
       }
     };
@@ -70,39 +62,61 @@ export const onRequestPost = async ({ request }) => {
     
     console.log('Calling Qwen API...');
     
-    const response = await fetch(qwenUrl, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${qwenKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(apiRequest)
-    });
-
-    console.log('Qwen response status:', response.status);
+    // 添加超时控制
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 25000); // 25秒超时
     
-    const data = await response.json();
-    console.log('Qwen response:', JSON.stringify(data).substring(0, 200));
+    try {
+      const response = await fetch(qwenUrl, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${qwenKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(apiRequest),
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
 
-    if (data.code) {
-      console.error('Qwen API Error:', data);
-      return new Response(JSON.stringify({ error: data.message || 'AI分析失败' }), {
-        status: 500,
+      console.log('Qwen response status:', response.status);
+      
+      const data = await response.json();
+      console.log('Qwen response:', JSON.stringify(data).substring(0, 200));
+
+      if (data.code) {
+        console.error('Qwen API Error:', data);
+        return new Response(JSON.stringify({ error: data.message || 'AI分析失败' }), {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+
+      const analysisText = data.output?.choices?.[0]?.message?.content || '';
+      
+      console.log('Analysis complete');
+      
+      return new Response(JSON.stringify({
+        success: true,
+        analysis: analysisText
+      }), {
+        status: 200,
         headers: { 'Content-Type': 'application/json' }
       });
+    } catch (fetchError) {
+      clearTimeout(timeoutId);
+      if (fetchError.name === 'AbortError') {
+        console.error('Fetch timeout');
+        return new Response(JSON.stringify({ 
+          error: 'AI分析超时，请稍后重试',
+          timeout: true 
+        }), {
+          status: 504,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+      throw fetchError;
     }
-
-    const analysisText = data.output?.choices?.[0]?.message?.content || '';
-    
-    console.log('Analysis complete');
-    
-    return new Response(JSON.stringify({
-      success: true,
-      analysis: analysisText
-    }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' }
-    });
 
   } catch (error) {
     console.error('AI Analysis Error:', error.message);
