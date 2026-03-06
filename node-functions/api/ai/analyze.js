@@ -1,4 +1,4 @@
-export async function onRequest(context) {
+export default function onRequest(context) {
   const { request } = context;
   
   if (request.method === 'POST') {
