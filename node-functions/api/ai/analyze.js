@@ -27,22 +27,30 @@ export const onRequestPost = async ({ request }) => {
     const { career, riskScore, riskLevel, breakdown } = assessmentResult;
     console.log('Processing:', career);
 
-    // 简化提示词，减少AI处理时间
-    const prompt = `作为职业规划专家，请简要分析职业"${career}"的AI替代风险（风险评分${riskScore}，等级${riskLevel}）：
-1. 风险解读：为什么面临AI替代风险
-2. 核心优势：AI时代仍具优势
-3. 未来威胁：3-5年最大威胁
-4. 新机会：AI带来的发展方向
-5. 具体建议：3条可执行建议
-请用中文回答，简洁明了。`;
+    const prompt = `作为职业规划专家，请分析职业"${career}"的AI替代风险（风险评分${riskScore}，等级${riskLevel}）。请严格按照以下格式回答：
+
+【风险解读】
+（详细解释该职业面临AI替代风险的主要原因）
+
+【优势分析】
+（该职业在AI时代仍具有的核心优势）
+
+【威胁识别】
+（未来3-5年可能面临的最大威胁）
+
+【机会发现】
+（AI技术带来的新机会和发展方向）
+
+【具体建议】
+（3-5条可执行的职业发展建议）`;
 
     const apiRequest = {
-      model: 'qwen-turbo',  // 使用更快的模型
+      model: 'qwen-turbo',
       input: {
         messages: [
           {
             role: 'system',
-            content: '你是职业规划专家，擅长分析AI对职业的影响。'
+            content: '你是职业规划专家，擅长分析AI对职业的影响。请严格按照用户要求的格式回答。'
           },
           {
             role: 'user',
@@ -52,7 +60,7 @@ export const onRequestPost = async ({ request }) => {
       },
       parameters: {
         temperature: 0.7,
-        max_tokens: 1500,  // 减少token数量
+        max_tokens: 2000,
         result_format: 'message'
       }
     };
@@ -62,9 +70,8 @@ export const onRequestPost = async ({ request }) => {
     
     console.log('Calling Qwen API...');
     
-    // 添加超时控制
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 25000); // 25秒超时
+    const timeoutId = setTimeout(() => controller.abort(), 25000);
     
     try {
       const response = await fetch(qwenUrl, {
@@ -82,7 +89,6 @@ export const onRequestPost = async ({ request }) => {
       console.log('Qwen response status:', response.status);
       
       const data = await response.json();
-      console.log('Qwen response:', JSON.stringify(data).substring(0, 200));
 
       if (data.code) {
         console.error('Qwen API Error:', data);
@@ -94,11 +100,14 @@ export const onRequestPost = async ({ request }) => {
 
       const analysisText = data.output?.choices?.[0]?.message?.content || '';
       
+      // 解析文本为结构化数据
+      const parsedAnalysis = parseAnalysis(analysisText);
+      
       console.log('Analysis complete');
       
       return new Response(JSON.stringify({
         success: true,
-        analysis: analysisText
+        analysis: parsedAnalysis
       }), {
         status: 200,
         headers: { 'Content-Type': 'application/json' }
@@ -126,6 +135,39 @@ export const onRequestPost = async ({ request }) => {
     });
   }
 };
+
+// 解析AI返回的文本为结构化数据
+function parseAnalysis(text) {
+  const sections = {
+    riskInterpretation: '',
+    advantages: '',
+    threats: '',
+    opportunities: '',
+    recommendations: ''
+  };
+
+  const patterns = {
+    riskInterpretation: /【风险解读】\s*\n?([\s\S]*?)(?=【|$)/,
+    advantages: /【优势分析】\s*\n?([\s\S]*?)(?=【|$)/,
+    threats: /【威胁识别】\s*\n?([\s\S]*?)(?=【|$)/,
+    opportunities: /【机会发现】\s*\n?([\s\S]*?)(?=【|$)/,
+    recommendations: /【具体建议】\s*\n?([\s\S]*?)(?=【|$)/
+  };
+
+  for (const [key, pattern] of Object.entries(patterns)) {
+    const match = text.match(pattern);
+    if (match) {
+      sections[key] = match[1].trim();
+    }
+  }
+
+  // 如果没有匹配到格式，将整个文本作为风险解读
+  if (!sections.riskInterpretation && text) {
+    sections.riskInterpretation = text;
+  }
+
+  return sections;
+}
 
 export const onRequestGet = async ({ request }) => {
   return new Response(JSON.stringify({ 
