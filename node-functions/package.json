@@ -1,6 +1,0 @@
-{
-  "name": "ai-replacement-risk-api",
-  "version": "1.0.0",
-  "main": "node-functions/api/analyze.js",
-  "type": "module"
-}
