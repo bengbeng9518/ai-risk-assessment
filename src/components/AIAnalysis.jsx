@@ -71,46 +71,54 @@ const AIAnalysis = ({ assessmentResult, autoRun = false }) => {
   const collapseItems = [
     {
       key: '1',
-      label: '📊 风险解读',
-      children: <p style={{ lineHeight: '1.8', whiteSpace: 'pre-wrap' }}>{analysis?.riskInterpretation}</p>
+      label: <span style={{ color: '#ffffff', fontSize: '15px', fontWeight: 600 }}>📊 风险解读</span>,
+      children: <p style={{ lineHeight: '1.8', whiteSpace: 'pre-wrap', color: '#d0d0e0', fontSize: '14px' }}>{analysis?.riskInterpretation}</p>
     },
     {
       key: '2',
-      label: '💪 优势分析',
-      children: <p style={{ lineHeight: '1.8', whiteSpace: 'pre-wrap' }}>{analysis?.advantages}</p>
+      label: <span style={{ color: '#ffffff', fontSize: '15px', fontWeight: 600 }}>💪 优势分析</span>,
+      children: <p style={{ lineHeight: '1.8', whiteSpace: 'pre-wrap', color: '#d0d0e0', fontSize: '14px' }}>{analysis?.advantages}</p>
     },
     {
       key: '3',
-      label: '⚠️ 威胁识别',
-      children: <p style={{ lineHeight: '1.8', whiteSpace: 'pre-wrap' }}>{analysis?.threats}</p>
+      label: <span style={{ color: '#ffffff', fontSize: '15px', fontWeight: 600 }}>⚠️ 威胁识别</span>,
+      children: <p style={{ lineHeight: '1.8', whiteSpace: 'pre-wrap', color: '#d0d0e0', fontSize: '14px' }}>{analysis?.threats}</p>
     },
     {
       key: '4',
-      label: '🚀 机会发现',
-      children: <p style={{ lineHeight: '1.8', whiteSpace: 'pre-wrap' }}>{analysis?.opportunities}</p>
+      label: <span style={{ color: '#ffffff', fontSize: '15px', fontWeight: 600 }}>🚀 机会发现</span>,
+      children: <p style={{ lineHeight: '1.8', whiteSpace: 'pre-wrap', color: '#d0d0e0', fontSize: '14px' }}>{analysis?.opportunities}</p>
     },
     {
       key: '5',
-      label: '📋 具体建议',
-      children: <p style={{ lineHeight: '1.8', whiteSpace: 'pre-wrap' }}>{analysis?.recommendations}</p>
+      label: <span style={{ color: '#ffffff', fontSize: '15px', fontWeight: 600 }}>📋 具体建议</span>,
+      children: <p style={{ lineHeight: '1.8', whiteSpace: 'pre-wrap', color: '#d0d0e0', fontSize: '14px' }}>{analysis?.recommendations}</p>
     }
   ];
 
   return (
     <Card 
       title={
-        <span>
-          <RobotOutlined /> AI智能分析 <span style={{ fontSize: '12px', color: '#999' }}>(通义千问驱动)</span>
+        <span style={{ color: '#ffffff', fontSize: '16px', fontWeight: 600 }}>
+          <RobotOutlined style={{ color: '#00d4ff', marginRight: 8 }} /> 
+          AI智能分析 
+          <span style={{ fontSize: '12px', color: '#a0a0b0', marginLeft: 8 }}>(通义千问驱动)</span>
         </span>
       } 
-      style={{ marginTop: 20 }}
+      style={{ 
+        marginTop: 24,
+        borderRadius: 16,
+        border: '1px solid rgba(0, 212, 255, 0.2)',
+        background: '#1e1e32'
+      }}
+      headStyle={{ borderBottom: '1px solid rgba(0, 212, 255, 0.15)' }}
     >
       {error && (
         <Alert 
           message={error} 
           type="error" 
           showIcon 
-          style={{ marginBottom: 15 }}
+          style={{ marginBottom: 16, borderRadius: 12 }}
           closable
           onClose={() => setError(null)}
         />
@@ -118,27 +126,42 @@ const AIAnalysis = ({ assessmentResult, autoRun = false }) => {
 
       {loading && (
         <div style={{ textAlign: 'center', padding: '40px' }}>
-          <Spin size="large" />
-          <p style={{ marginTop: 15 }}>通义千问AI正在分析中，请稍候...</p>
-          <p style={{ fontSize: '12px', color: '#999' }}>这可能需要几秒钟时间</p>
+          <Spin size="large" style={{ color: '#00d4ff' }} />
+          <p style={{ marginTop: 20, color: '#d0d0e0', fontSize: '15px' }}>通义千问AI正在分析中，请稍候...</p>
+          <p style={{ fontSize: '13px', color: '#a0a0b0' }}>这可能需要几秒钟时间</p>
         </div>
       )}
       
       {analysis && (
-        <Collapse defaultActiveKey={['1', '2', '3', '4', '5']} items={collapseItems} />
+        <Collapse 
+          defaultActiveKey={['1', '2', '3', '4', '5']} 
+          items={collapseItems}
+          style={{ background: 'transparent' }}
+        />
       )}
 
       {analysis && (
-        <div style={{ marginTop: 16, textAlign: 'center' }}>
-          <Button onClick={() => {
-            if (!checkAvailableUsage()) {
-              message.warning('您的免费次数已用完，请购买更多次数');
-              return;
-            }
-            decrementUsage();
-            setAnalysis(null);
-          }}>
-            重新分析
+        <div style={{ marginTop: 20, textAlign: 'center' }}>
+          <Button 
+            onClick={() => {
+              if (!checkAvailableUsage()) {
+                message.warning('您的免费次数已用完，请购买更多次数');
+                return;
+              }
+              decrementUsage();
+              setAnalysis(null);
+            }}
+            style={{
+              background: 'linear-gradient(135deg, #00d4ff, #7b2cbf)',
+              border: 'none',
+              color: '#ffffff',
+              fontWeight: 600,
+              padding: '0 24px',
+              height: '40px',
+              borderRadius: '20px'
+            }}
+          >
+            🔄 重新分析
           </Button>
         </div>
       )}

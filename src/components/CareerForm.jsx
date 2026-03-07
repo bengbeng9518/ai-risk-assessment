@@ -106,11 +106,11 @@ const CareerForm = ({ onAssess, onCareerSelect }) => {
       ) : (
         <Form.Item 
           name="career" 
-          label="选择职业"
+          label={<span style={{ color: '#d0d0e0', fontSize: '15px', fontWeight: 500 }}>选择职业</span>}
           tooltip="从列表选择或输入自定义职业"
         >
           <Select 
-            placeholder="请选择职业"
+            placeholder={<span style={{ color: '#a0a0b0' }}>🔍 请选择或搜索职业</span>}
             size={isMobile ? 'large' : 'middle'}
             showSearch
             optionFilterProp="children"
@@ -119,11 +119,11 @@ const CareerForm = ({ onAssess, onCareerSelect }) => {
             dropdownRender={(menu) => (
               <>
                 {menu}
-                <div style={{ padding: '8px', borderTop: '1px solid #f0f0f0' }}>
+                <div style={{ padding: '12px', borderTop: '1px solid rgba(0, 212, 255, 0.2)' }}>
                   <Button 
                     type="link" 
                     onClick={handleCustomClick}
-                    style={{ padding: 0, color: '#1890ff' }}
+                    style={{ padding: 0, color: '#00d4ff', fontWeight: 500 }}
                   >
                     + 自定义职业
                   </Button>
@@ -133,7 +133,8 @@ const CareerForm = ({ onAssess, onCareerSelect }) => {
           >
             {careers.map(career => (
               <Select.Option key={career.id} value={career.name}>
-                {career.name} <span style={{ color: '#999', fontSize: '12px' }}>({career.category})</span>
+                <span style={{ color: '#ffffff', fontWeight: 500 }}>{career.name}</span>
+                <span style={{ color: '#a0a0b0', fontSize: '12px', marginLeft: 8 }}>({career.category})</span>
               </Select.Option>
             ))}
           </Select>

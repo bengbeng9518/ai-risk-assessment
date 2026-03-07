@@ -18,7 +18,12 @@ const theme = {
   highRisk: '#ff4757',
   mediumRisk: '#ffa502',
   lowRisk: '#2ed573',
-  cardGradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+  cardGradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+  darkBg: '#1e1e32',
+  darkCard: '#252542',
+  textLight: '#ffffff',
+  textGray: '#d0d0e0',
+  textMuted: '#a0a0b0'
 };
 
 const ResultDisplay = ({ result }) => {
@@ -59,22 +64,22 @@ const ResultDisplay = ({ result }) => {
   const radarOption = {
     radar: {
       indicator: [
-        { name: '任务自动化', max: 100, color: '#636e72' },
-        { name: '技能复杂度', max: 100, color: '#636e72' },
-        { name: '数据可获得性', max: 100, color: '#636e72' },
-        { name: '技术成熟度', max: 100, color: '#636e72' }
+        { name: '任务自动化', max: 100, color: '#d0d0e0' },
+        { name: '技能复杂度', max: 100, color: '#d0d0e0' },
+        { name: '数据可获得性', max: 100, color: '#d0d0e0' },
+        { name: '技术成熟度', max: 100, color: '#d0d0e0' }
       ],
       radius: isMobile ? 55 : 75,
       splitArea: {
         areaStyle: {
-          color: ['rgba(255,255,255,0.02)', 'rgba(255,255,255,0.04)', 'rgba(255,255,255,0.06)', 'rgba(255,255,255,0.08)']
+          color: ['rgba(0, 212, 255, 0.02)', 'rgba(0, 212, 255, 0.04)', 'rgba(0, 212, 255, 0.06)', 'rgba(0, 212, 255, 0.08)']
         }
       },
       axisLine: {
-        lineStyle: { color: 'rgba(0,0,0,0.1)' }
+        lineStyle: { color: 'rgba(0, 212, 255, 0.2)' }
       },
       splitLine: {
-        lineStyle: { color: 'rgba(0,0,0,0.1)' }
+        lineStyle: { color: 'rgba(0, 212, 255, 0.15)' }
       }
     },
     series: [{
@@ -132,29 +137,31 @@ const ResultDisplay = ({ result }) => {
       style={{ 
         marginTop: 20,
         borderRadius: 20,
-        border: 'none',
-        boxShadow: '0 8px 30px rgba(0,0,0,0.12)',
-        overflow: 'hidden'
+        border: '1px solid rgba(0, 212, 255, 0.2)',
+        boxShadow: '0 8px 30px rgba(0, 0, 0, 0.3)',
+        overflow: 'hidden',
+        background: theme.darkBg
       }}
       bodyStyle={{ padding: isMobile ? 16 : 24 }}
     >
       <div style={{ 
-        background: getRiskBg(riskLevel),
+        background: `${getRiskColor(riskLevel)}15`,
         borderRadius: 16,
         padding: isMobile ? 16 : 24,
         marginBottom: 24,
-        textAlign: 'center'
+        textAlign: 'center',
+        border: `1px solid ${getRiskColor(riskLevel)}40`
       }}>
         <div style={{ marginBottom: 16 }}>
-          <Title level={isMobile ? 4 : 3} style={{ marginBottom: 8, color: theme.primary }}>
+          <Title level={isMobile ? 4 : 3} style={{ marginBottom: 8, color: '#ffffff', textShadow: `0 0 20px ${getRiskColor(riskLevel)}80` }}>
             🎯 {result.career}
           </Title>
           <div>
             {result.isCustomCareer && (
-              <Tag color="orange" style={{ borderRadius: 12 }}>自定义</Tag>
+              <Tag style={{ borderRadius: 12, background: '#ffa502', color: '#fff', border: 'none' }}>自定义</Tag>
             )}
             {isPersonalized && (
-              <Tag color="purple" style={{ borderRadius: 12 }}>个性化</Tag>
+              <Tag style={{ borderRadius: 12, background: '#7b2cbf', color: '#fff', border: 'none' }}>个性化</Tag>
             )}
           </div>
         </div>
@@ -164,22 +171,22 @@ const ResultDisplay = ({ result }) => {
           percent={riskScore} 
           strokeColor={getRiskColor(riskLevel)}
           size={isMobile ? 160 : 220}
-          trailColor="rgba(0,0,0,0.06)"
+          trailColor="rgba(255,255,255,0.1)"
           format={(percent) => (
             <div>
-              <div style={{ fontSize: isMobile ? 28 : 36, fontWeight: 700, color: getRiskColor(riskLevel) }}>
+              <div style={{ fontSize: isMobile ? 32 : 42, fontWeight: 800, color: getRiskColor(riskLevel), textShadow: `0 0 20px ${getRiskColor(riskLevel)}60` }}>
                 {percent}
               </div>
-              <div style={{ fontSize: 12, color: '#636e72' }}>风险指数</div>
+              <div style={{ fontSize: 13, color: '#a0a0b0', marginTop: 4 }}>风险指数</div>
             </div>
           )}
         />
         
         <div style={{ marginTop: 16 }}>
-          <Title level={4} style={{ color: getRiskColor(riskLevel), marginBottom: 4 }}>
+          <Title level={4} style={{ color: getRiskColor(riskLevel), marginBottom: 8, textShadow: `0 0 15px ${getRiskColor(riskLevel)}60` }}>
             {riskLevel}风险
           </Title>
-          <Text style={{ fontSize: 14, color: '#636e72' }}>
+          <Text style={{ fontSize: 14, color: '#d0d0e0', fontWeight: 500 }}>
             {getRiskMessage(riskLevel)}
           </Text>
         </div>
@@ -189,14 +196,15 @@ const ResultDisplay = ({ result }) => {
         <div style={{ 
           marginBottom: 20, 
           padding: 16, 
-          background: '#f8f0ff', 
+          background: 'rgba(123, 44, 191, 0.15)', 
           borderRadius: 12,
           display: 'flex',
           flexWrap: 'wrap',
           gap: 8,
-          alignItems: 'center'
+          alignItems: 'center',
+          border: '1px solid rgba(123, 44, 191, 0.3)'
         }}>
-          <Text strong style={{ color: '#764ba2' }}>📍 个性化因素：</Text>
+          <Text strong style={{ color: '#ffffff' }}>📍 个性化因素：</Text>
           {personalizedFactors.companyType && personalizedFactors.companyType !== 'default' && (
             <Tag color="purple" style={{ borderRadius: 12 }}>{getCompanyTypeLabel(personalizedFactors.companyType)}</Tag>
           )}
@@ -212,14 +220,15 @@ const ResultDisplay = ({ result }) => {
       <Row gutter={[16, 16]}>
         <Col xs={24} md={12}>
           <div style={{ 
-            background: '#fafafa', 
+            background: theme.darkCard, 
             borderRadius: 12, 
             padding: 16,
-            height: '100%'
+            height: '100%',
+            border: '1px solid rgba(0, 212, 255, 0.15)'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-              <ThunderboltOutlined style={{ color: theme.primary, fontSize: 18 }} />
-              <Title level={5} style={{ margin: 0, color: '#2d3436' }}>维度分析</Title>
+              <ThunderboltOutlined style={{ color: '#00d4ff', fontSize: 20 }} />
+              <Title level={5} style={{ margin: 0, color: '#ffffff' }}>维度分析</Title>
             </div>
             <div style={{ height: isMobile ? 220 : 280 }}>
               <ReactECharts option={radarOption} style={{ height: '100%', width: '100%' }} />
@@ -228,35 +237,38 @@ const ResultDisplay = ({ result }) => {
         </Col>
         <Col xs={24} md={12}>
           <div style={{ 
-            background: '#fafafa', 
+            background: theme.darkCard, 
             borderRadius: 12, 
             padding: 16,
-            height: '100%'
+            height: '100%',
+            border: '1px solid rgba(255, 165, 2, 0.15)'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-              <BulbOutlined style={{ color: '#ffa502', fontSize: 18 }} />
-              <Title level={5} style={{ margin: 0, color: '#2d3436' }}>💡 发展建议</Title>
+              <BulbOutlined style={{ color: '#ffa502', fontSize: 20 }} />
+              <Title level={5} style={{ margin: 0, color: '#ffffff' }}>💡 发展建议</Title>
             </div>
             <List
               dataSource={recommendations}
               renderItem={(item, index) => (
-                <List.Item style={{ border: 'none', padding: '8px 0' }}>
+                <List.Item style={{ border: 'none', padding: '10px 0' }}>
                   <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
                     <span style={{ 
-                      width: 24, 
-                      height: 24, 
+                      width: 28, 
+                      height: 28, 
                       borderRadius: '50%', 
-                      background: theme.gradient,
+                      background: 'linear-gradient(135deg, #ffa502, #ff6b35)',
                       color: 'white',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: 12,
-                      flexShrink: 0
+                      fontSize: 13,
+                      fontWeight: 700,
+                      flexShrink: 0,
+                      boxShadow: '0 2px 8px rgba(255, 165, 2, 0.3)'
                     }}>
                       {index + 1}
                     </span>
-                    <Text style={{ fontSize: isMobile ? 13 : 14, lineHeight: 1.6 }}>
+                    <Text style={{ fontSize: isMobile ? 14 : 15, lineHeight: 1.7, color: '#d0d0e0' }}>
                       {item}
                     </Text>
                   </div>

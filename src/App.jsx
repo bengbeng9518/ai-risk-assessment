@@ -154,17 +154,15 @@ function App() {
                 </div>
                 <Title level={3} style={{
                   marginBottom: 12,
-                  color: theme.textDark,
-                  fontSize: '20px',
+                  fontSize: '22px',
                   fontWeight: 700,
-                  background: theme.headerGradient,
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent'
+                  color: '#ffffff',
+                  textShadow: '0 0 20px rgba(0, 212, 255, 0.5)'
                 }}>
                   AI职业风险评估
                 </Title>
-                <Paragraph style={{ color: theme.textGray, fontSize: 14, marginBottom: 0, lineHeight: 1.6 }}>
-                  AI时代，你的工作还安全吗<br/>科学数据分析，精准预见职业未来
+                <Paragraph style={{ color: '#d0d0e0', fontSize: 15, marginBottom: 0, lineHeight: 1.8 }}>
+                  AI时代，你的工作还安全吗<br/><span style={{ color: '#00d4ff' }}>科学数据分析，精准预见职业未来</span>
                 </Paragraph>
               </div>
 
@@ -211,21 +209,22 @@ function App() {
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: 8,
+              gap: 10,
               marginBottom: 20
             }}>
               <div style={{
-                width: 8,
-                height: 8,
+                width: 10,
+                height: 10,
                 borderRadius: '50%',
                 background: theme.primary,
-                boxShadow: `0 0 10px ${theme.primary}`
+                boxShadow: `0 0 15px ${theme.primary}`
               }} />
               <Title level={5} style={{
                 margin: 0,
-                color: theme.textDark,
-                fontSize: '16px',
-                fontWeight: 600
+                color: '#ffffff',
+                fontSize: '18px',
+                fontWeight: 700,
+                textShadow: '0 0 10px rgba(0, 212, 255, 0.3)'
               }}>
                 选择你的职业
               </Title>
