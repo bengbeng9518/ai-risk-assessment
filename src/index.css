@@ -119,8 +119,19 @@ body {
 
 .ant-collapse-header {
   color: #ffffff !important;
-  font-weight: 600 !important;
+  font-weight: 700 !important;
   background: #1e1e32 !important;
+  font-size: 15px !important;
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+}
+
+.ant-collapse-header .ant-collapse-arrow {
+  color: #00d4ff !important;
+  font-size: 14px !important;
+}
+
+.ant-collapse-header:hover {
+  background: rgba(0, 212, 255, 0.1) !important;
 }
 
 .ant-collapse-content {
@@ -481,23 +492,69 @@ body {
 /* 移动端 Radio Button 优化 */
 @media (max-width: 768px) {
   .ant-radio-button-wrapper {
-    height: 40px;
-    line-height: 38px;
-    padding: 0 12px;
-    font-size: 14px;
+    height: auto;
+    min-height: 36px;
+    line-height: 1.4;
+    padding: 8px 10px;
+    font-size: 13px;
     flex: 1;
-    min-width: 80px;
+    min-width: 70px;
     text-align: center;
+    white-space: normal;
+    word-wrap: break-word;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .ant-radio-button-wrapper > span {
+    white-space: normal;
+    word-wrap: break-word;
+    line-height: 1.3;
   }
 }
 
 /* 滑块深色主题 */
 .ant-slider-track {
   background: linear-gradient(90deg, #00d4ff, #7b2cbf) !important;
+  height: 6px !important;
+}
+
+.ant-slider-rail {
+  background: rgba(255, 255, 255, 0.15) !important;
+  height: 6px !important;
 }
 
 .ant-slider-handle {
   border-color: #00d4ff !important;
+  background: #00d4ff !important;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.5) !important;
+  width: 18px !important;
+  height: 18px !important;
+  margin-top: -6px !important;
+}
+
+.ant-slider-handle:hover {
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.8) !important;
+  transform: scale(1.1) !important;
+}
+
+.ant-slider-mark-text {
+  color: #a0a0b0 !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+}
+
+.ant-slider-mark-text-active {
+  color: #00d4ff !important;
+}
+
+.ant-slider-step .ant-slider-dot {
+  background: rgba(0, 212, 255, 0.3) !important;
+  border-color: transparent !important;
+}
+
+.ant-slider-step .ant-slider-dot-active {
   background: #00d4ff !important;
 }
 

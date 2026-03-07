@@ -242,25 +242,30 @@ function App() {
               <Card 
                 size="small" 
                 style={{ 
-                  marginTop: 16, 
+                  marginTop: 20, 
                   textAlign: 'center',
-                  borderRadius: 12,
-                  border: 'none',
-                  boxShadow: '0 2px 12px rgba(0,0,0,0.06)'
+                  borderRadius: 16,
+                  border: '1px solid rgba(0, 212, 255, 0.3)',
+                  boxShadow: '0 4px 20px rgba(0, 212, 255, 0.15)',
+                  background: 'linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(123, 44, 191, 0.1))'
                 }}
-                bodyStyle={{ padding: 16 }}
+                bodyStyle={{ padding: '16px 20px' }}
               >
-                <Typography.Text strong style={{ marginRight: 12, fontSize: 15 }}>
-                  ✨ 已选择：<span style={{ color: theme.primary }}>{selectedCareer}</span>
+                <Typography.Text strong style={{ marginRight: 16, fontSize: 16, color: '#ffffff' }}>
+                  ✨ 已选择：<span style={{ color: '#00d4ff', fontWeight: 700 }}>{selectedCareer}</span>
                 </Typography.Text>
-                <Divider type="vertical" />
+                <Divider type="vertical" style={{ borderColor: 'rgba(0, 212, 255, 0.3)' }} />
                 <Button 
                   type="primary"
                   onClick={() => handleAssess(false)}
                   style={{ 
-                    borderRadius: 20,
-                    background: theme.gradient,
-                    border: 'none'
+                    borderRadius: 24,
+                    background: 'linear-gradient(135deg, #00d4ff, #7b2cbf)',
+                    border: 'none',
+                    padding: '0 24px',
+                    height: '40px',
+                    fontWeight: 600,
+                    boxShadow: '0 4px 15px rgba(0, 212, 255, 0.4)'
                   }}
                 >
                   🤖 AI智能评估

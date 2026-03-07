@@ -94,9 +94,17 @@ const PersonalInfoForm = ({ career, onUpdateFactors }) => {
         initialValues={factors}
         onValuesChange={handleValuesChange}
       >
-        <Collapse defaultActiveKey={['company', 'job', 'details']} ghost>
-          <Collapse.Panel header="🏢 公司情况" key="company">
-            <Form.Item name="companyType" label="公司类型" tooltip="不同类型公司的AI应用程度不同">
+        <Collapse defaultActiveKey={['company', 'job', 'details']} ghost style={{ marginTop: 8 }}>
+          <Collapse.Panel 
+            header={<span style={{ fontSize: '16px', fontWeight: 700 }}>🏢 公司情况</span>} 
+            key="company"
+          >
+            <Form.Item 
+              name="companyType" 
+              label={<span style={{ color: '#d0d0e0', fontSize: '14px', fontWeight: 500 }}>公司类型</span>} 
+              tooltip="不同类型公司的AI应用程度不同"
+              style={{ marginBottom: 16 }}
+            >
               <Radio.Group 
                 options={companyTypes} 
                 optionType="button" 
@@ -108,7 +116,11 @@ const PersonalInfoForm = ({ career, onUpdateFactors }) => {
                 }}
               />
             </Form.Item>
-            <Form.Item name="companyDescription" label="公司描述（可选）" tooltip="补充公司规模、行业地位等信息">
+            <Form.Item 
+              name="companyDescription" 
+              label={<span style={{ color: '#d0d0e0', fontSize: '14px', fontWeight: 500 }}>公司描述（可选）</span>} 
+              tooltip="补充公司规模、行业地位等信息"
+            >
               <TextArea 
                 placeholder="例如： 公司规模500人，行业排名前三，正在进行数字化转型..." 
                 rows={2}
@@ -118,8 +130,16 @@ const PersonalInfoForm = ({ career, onUpdateFactors }) => {
             </Form.Item>
           </Collapse.Panel>
 
-          <Collapse.Panel header="💼 岗位情况" key="job">
-            <Form.Item name="jobLevel" label="职级" tooltip="不同职级的工作内容和要求不同">
+          <Collapse.Panel 
+            header={<span style={{ fontSize: '16px', fontWeight: 700 }}>💼 岗位情况</span>} 
+            key="job"
+          >
+            <Form.Item 
+              name="jobLevel" 
+              label={<span style={{ color: '#d0d0e0', fontSize: '14px', fontWeight: 500 }}>职级</span>} 
+              tooltip="不同职级的工作内容和要求不同"
+              style={{ marginBottom: 16 }}
+            >
               <Radio.Group 
                 options={jobLevels} 
                 optionType="button" 
@@ -131,7 +151,11 @@ const PersonalInfoForm = ({ career, onUpdateFactors }) => {
                 }}
               />
             </Form.Item>
-            <Form.Item name="jobDescription" label="岗位描述（可选）" tooltip="描述您的主要工作内容">
+            <Form.Item 
+              name="jobDescription" 
+              label={<span style={{ color: '#d0d0e0', fontSize: '14px', fontWeight: 500 }}>岗位描述（可选）</span>} 
+              tooltip="描述您的主要工作内容"
+            >
               <TextArea 
                 placeholder="例如： 负责后端开发，主要使用Java技术栈..." 
                 rows={3}
@@ -141,20 +165,24 @@ const PersonalInfoForm = ({ career, onUpdateFactors }) => {
             </Form.Item>
           </Collapse.Panel>
 
-          <Collapse.Panel header="📊 影响因素" key="details">
+          <Collapse.Panel 
+            header={<span style={{ fontSize: '16px', fontWeight: 700 }}>📊 影响因素</span>} 
+            key="details"
+          >
             <Form.Item 
               name="aiExposure" 
               label={
-                <span>
+                <span style={{ color: '#d0d0e0', fontSize: '14px', fontWeight: 500 }}>
                   AI接触程度 
                   <Tooltip title="工作中使用AI工具或受AI影响的程度">
-                    <QuestionCircleOutlined style={{ marginLeft: 4, color: '#999' }} />
+                    <QuestionCircleOutlined style={{ marginLeft: 4, color: '#00d4ff' }} />
                   </Tooltip>
                 </span>
               }
+              style={{ marginBottom: 24 }}
             >
               <Slider 
-                marks={{ 0: '无', 50: '一般', 100: '高频' }} 
+                marks={{ 0: <span style={{ color: '#a0a0b0' }}>无</span>, 50: <span style={{ color: '#a0a0b0' }}>一般</span>, 100: <span style={{ color: '#a0a0b0' }}>高频</span> }} 
                 tooltip={{ formatter: (value) => `${value}%` }}
               />
             </Form.Item>
@@ -162,16 +190,17 @@ const PersonalInfoForm = ({ career, onUpdateFactors }) => {
             <Form.Item 
               name="creativeRequirement" 
               label={
-                <span>
+                <span style={{ color: '#d0d0e0', fontSize: '14px', fontWeight: 500 }}>
                   创造性要求
                   <Tooltip title="工作需要创造性思维的程度">
-                    <QuestionCircleOutlined style={{ marginLeft: 4, color: '#999' }} />
+                    <QuestionCircleOutlined style={{ marginLeft: 4, color: '#00d4ff' }} />
                   </Tooltip>
                 </span>
               }
+              style={{ marginBottom: 24 }}
             >
               <Slider 
-                marks={{ 0: '执行性', 50: '常规性', 100: '高度创造' }} 
+                marks={{ 0: <span style={{ color: '#a0a0b0' }}>执行性</span>, 50: <span style={{ color: '#a0a0b0' }}>常规性</span>, 100: <span style={{ color: '#a0a0b0' }}>高度创造</span> }} 
                 tooltip={{ formatter: (value) => `${value}%` }}
               />
             </Form.Item>
@@ -179,16 +208,17 @@ const PersonalInfoForm = ({ career, onUpdateFactors }) => {
             <Form.Item 
               name="humanInteraction" 
               label={
-                <span>
+                <span style={{ color: '#d0d0e0', fontSize: '14px', fontWeight: 500 }}>
                   人际互动需求
                   <Tooltip title="工作中与人沟通协作的需求程度">
-                    <QuestionCircleOutlined style={{ marginLeft: 4, color: '#999' }} />
+                    <QuestionCircleOutlined style={{ marginLeft: 4, color: '#00d4ff' }} />
                   </Tooltip>
                 </span>
               }
+              style={{ marginBottom: 24 }}
             >
               <Slider 
-                marks={{ 0: '独立', 50: '一般', 100: '高度互动' }} 
+                marks={{ 0: <span style={{ color: '#a0a0b0' }}>独立</span>, 50: <span style={{ color: '#a0a0b0' }}>一般</span>, 100: <span style={{ color: '#a0a0b0' }}>高度互动</span> }} 
                 tooltip={{ formatter: (value) => `${value}%` }}
               />
             </Form.Item>
@@ -196,16 +226,17 @@ const PersonalInfoForm = ({ career, onUpdateFactors }) => {
             <Form.Item 
               name="decisionMaking" 
               label={
-                <span>
+                <span style={{ color: '#d0d0e0', fontSize: '14px', fontWeight: 500 }}>
                   决策复杂度
                   <Tooltip title="工作中需要复杂决策的程度">
-                    <QuestionCircleOutlined style={{ marginLeft: 4, color: '#999' }} />
+                    <QuestionCircleOutlined style={{ marginLeft: 4, color: '#00d4ff' }} />
                   </Tooltip>
                 </span>
               }
+              style={{ marginBottom: 16 }}
             >
               <Slider 
-                marks={{ 0: '简单执行', 50: '中等决策', 100: '复杂决策' }} 
+                marks={{ 0: <span style={{ color: '#a0a0b0' }}>简单执行</span>, 50: <span style={{ color: '#a0a0b0' }}>中等决策</span>, 100: <span style={{ color: '#a0a0b0' }}>复杂决策</span> }} 
                 tooltip={{ formatter: (value) => `${value}%` }}
               />
             </Form.Item>
