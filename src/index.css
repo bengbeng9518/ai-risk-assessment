@@ -142,16 +142,28 @@ body {
 
 .ant-alert {
   border-radius: 12px !important;
+  color: #ffffff !important;
 }
 
 .ant-alert-error {
-  background: rgba(255, 0, 110, 0.1) !important;
-  border: 1px solid rgba(255, 0, 110, 0.3) !important;
+  background: #2d1f2f !important;
+  border: 1px solid rgba(255, 0, 110, 0.5) !important;
+  color: #ffffff !important;
 }
 
 .ant-alert-success {
-  background: rgba(0, 212, 255, 0.1) !important;
-  border: 1px solid rgba(0, 212, 255, 0.3) !important;
+  background: #1f2d3d !important;
+  border: 1px solid rgba(0, 212, 255, 0.5) !important;
+  color: #ffffff !important;
+}
+
+.ant-alert-message {
+  color: #ffffff !important;
+  font-weight: 500 !important;
+}
+
+.ant-alert-description {
+  color: #d0d0e0 !important;
 }
 
 .ant-modal-content {
@@ -299,4 +311,341 @@ body {
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+/* 下拉菜单深色主题 */
+.ant-select-dropdown {
+  background: #1e1e32 !important;
+  border: 1px solid rgba(0, 212, 255, 0.3) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+}
+
+.ant-select-item {
+  color: #d0d0e0 !important;
+  background: transparent !important;
+}
+
+.ant-select-item-option-active {
+  background: rgba(0, 212, 255, 0.15) !important;
+}
+
+.ant-select-item-option-selected {
+  background: rgba(0, 212, 255, 0.25) !important;
+  color: #ffffff !important;
+  font-weight: 500 !important;
+}
+
+/* 标签深色主题 */
+.ant-tag {
+  background: rgba(0, 212, 255, 0.15) !important;
+  border: 1px solid rgba(0, 212, 255, 0.3) !important;
+  color: #00d4ff !important;
+}
+
+/* 进度条深色主题 */
+.ant-progress-bg {
+  background: linear-gradient(90deg, #00d4ff, #7b2cbf) !important;
+}
+
+.ant-progress-text {
+  color: #d0d0e0 !important;
+}
+
+/* 统计数字深色主题 */
+.ant-statistic-title {
+  color: #a0a0b0 !important;
+}
+
+.ant-statistic-content {
+  color: #ffffff !important;
+}
+
+/* 列表深色主题 */
+.ant-list-item {
+  border-bottom: 1px solid rgba(0, 212, 255, 0.1) !important;
+  color: #d0d0e0 !important;
+}
+
+.ant-list-item-meta-title {
+  color: #ffffff !important;
+}
+
+.ant-list-item-meta-description {
+  color: #a0a0b0 !important;
+}
+
+/* 描述列表深色主题 */
+.ant-descriptions-item-label {
+  color: #a0a0b0 !important;
+}
+
+.ant-descriptions-item-content {
+  color: #ffffff !important;
+}
+
+/* 时间轴深色主题 */
+.ant-timeline-item-tail {
+  border-left: 2px solid rgba(0, 212, 255, 0.3) !important;
+}
+
+.ant-timeline-item-content {
+  color: #d0d0e0 !important;
+}
+
+/* 步骤条深色主题 */
+.ant-steps-item-title {
+  color: #ffffff !important;
+}
+
+.ant-steps-item-description {
+  color: #a0a0b0 !important;
+}
+
+/* 分页深色主题 */
+.ant-pagination-item {
+  background: #252542 !important;
+  border: 1px solid rgba(0, 212, 255, 0.2) !important;
+}
+
+.ant-pagination-item a {
+  color: #d0d0e0 !important;
+}
+
+.ant-pagination-item-active {
+  background: rgba(0, 212, 255, 0.2) !important;
+  border-color: #00d4ff !important;
+}
+
+.ant-pagination-item-active a {
+  color: #00d4ff !important;
+}
+
+/* 单选框和复选框深色主题 */
+.ant-radio-wrapper,
+.ant-checkbox-wrapper {
+  color: #d0d0e0 !important;
+}
+
+.ant-radio-checked .ant-radio-inner {
+  border-color: #00d4ff !important;
+  background: #00d4ff !important;
+}
+
+.ant-checkbox-checked .ant-checkbox-inner {
+  background: #00d4ff !important;
+  border-color: #00d4ff !important;
+}
+
+/* 滑块深色主题 */
+.ant-slider-track {
+  background: linear-gradient(90deg, #00d4ff, #7b2cbf) !important;
+}
+
+.ant-slider-handle {
+  border-color: #00d4ff !important;
+  background: #00d4ff !important;
+}
+
+/* 评分深色主题 */
+.ant-rate-star-full .ant-rate-star-second {
+  color: #00d4ff !important;
+}
+
+/* 开关深色主题 */
+.ant-switch-checked {
+  background: linear-gradient(135deg, #00d4ff, #7b2cbf) !important;
+}
+
+/* 文字提示深色主题 */
+.ant-tooltip-inner {
+  background: #252542 !important;
+  border: 1px solid rgba(0, 212, 255, 0.3) !important;
+  color: #ffffff !important;
+}
+
+/* 气泡卡片深色主题 */
+.ant-popover-inner {
+  background: #252542 !important;
+  border: 1px solid rgba(0, 212, 255, 0.3) !important;
+}
+
+.ant-popover-title {
+  color: #ffffff !important;
+  border-bottom: 1px solid rgba(0, 212, 255, 0.2) !important;
+}
+
+.ant-popover-inner-content {
+  color: #d0d0e0 !important;
+}
+
+/* 抽屉深色主题 */
+.ant-drawer-content {
+  background: #1e1e32 !important;
+}
+
+.ant-drawer-header {
+  background: #252542 !important;
+  border-bottom: 1px solid rgba(0, 212, 255, 0.2) !important;
+}
+
+.ant-drawer-title {
+  color: #ffffff !important;
+}
+
+/* 骨架屏深色主题 */
+.ant-skeleton-content .ant-skeleton-title,
+.ant-skeleton-content .ant-skeleton-paragraph > li {
+  background: linear-gradient(90deg, #252542 25%, #2a2a50 37%, #252542 63%) !important;
+}
+
+/* 空状态深色主题 */
+.ant-empty-description {
+  color: #a0a0b0 !important;
+}
+
+/* 结果页深色主题 */
+.ant-result-title {
+  color: #ffffff !important;
+}
+
+.ant-result-subtitle {
+  color: #a0a0b0 !important;
+}
+
+/* 菜单深色主题 */
+.ant-menu {
+  background: transparent !important;
+}
+
+.ant-menu-item {
+  color: #d0d0e0 !important;
+}
+
+.ant-menu-item:hover {
+  color: #00d4ff !important;
+  background: rgba(0, 212, 255, 0.1) !important;
+}
+
+.ant-menu-item-selected {
+  color: #00d4ff !important;
+  background: rgba(0, 212, 255, 0.15) !important;
+}
+
+/* 表格深色主题 */
+.ant-table {
+  background: transparent !important;
+}
+
+.ant-table-thead > tr > th {
+  background: #252542 !important;
+  color: #ffffff !important;
+  border-bottom: 1px solid rgba(0, 212, 255, 0.2) !important;
+}
+
+.ant-table-tbody > tr > td {
+  background: #1e1e32 !important;
+  color: #d0d0e0 !important;
+  border-bottom: 1px solid rgba(0, 212, 255, 0.1) !important;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background: rgba(0, 212, 255, 0.1) !important;
+}
+
+/* 表单深色主题 */
+.ant-form-item-label > label {
+  color: #d0d0e0 !important;
+}
+
+.ant-form-item-explain {
+  color: #a0a0b0 !important;
+}
+
+/* 数字输入框深色主题 */
+.ant-input-number {
+  background: #2a2a45 !important;
+  border: 1px solid rgba(0, 212, 255, 0.3) !important;
+  color: #ffffff !important;
+}
+
+/* 日期选择器深色主题 */
+.ant-picker {
+  background: #2a2a45 !important;
+  border: 1px solid rgba(0, 212, 255, 0.3) !important;
+}
+
+.ant-picker-input > input {
+  color: #ffffff !important;
+}
+
+.ant-picker-suffix {
+  color: #a0a0b0 !important;
+}
+
+/* 时间选择器面板深色主题 */
+.ant-picker-panel {
+  background: #1e1e32 !important;
+  border: 1px solid rgba(0, 212, 255, 0.3) !important;
+}
+
+.ant-picker-cell {
+  color: #d0d0e0 !important;
+}
+
+.ant-picker-cell-in-view {
+  color: #ffffff !important;
+}
+
+.ant-picker-cell-selected .ant-picker-cell-inner {
+  background: #00d4ff !important;
+}
+
+/* 穿梭框深色主题 */
+.ant-transfer-list {
+  background: #1e1e32 !important;
+  border: 1px solid rgba(0, 212, 255, 0.2) !important;
+}
+
+.ant-transfer-list-header {
+  background: #252542 !important;
+  color: #ffffff !important;
+  border-bottom: 1px solid rgba(0, 212, 255, 0.2) !important;
+}
+
+.ant-transfer-list-content-item {
+  color: #d0d0e0 !important;
+}
+
+/* 树形控件深色主题 */
+.ant-tree {
+  background: transparent !important;
+  color: #d0d0e0 !important;
+}
+
+.ant-tree-node-content-wrapper:hover {
+  background: rgba(0, 212, 255, 0.1) !important;
+}
+
+.ant-tree-node-selected {
+  background: rgba(0, 212, 255, 0.2) !important;
+  color: #00d4ff !important;
+}
+
+/* 上传组件深色主题 */
+.ant-upload-drag {
+  background: #252542 !important;
+  border: 2px dashed rgba(0, 212, 255, 0.3) !important;
+}
+
+.ant-upload-drag:hover {
+  border-color: #00d4ff !important;
+}
+
+.ant-upload-text {
+  color: #ffffff !important;
+}
+
+.ant-upload-hint {
+  color: #a0a0b0 !important;
 }
