@@ -97,7 +97,16 @@ const PersonalInfoForm = ({ career, onUpdateFactors }) => {
         <Collapse defaultActiveKey={['company', 'job', 'details']} ghost>
           <Collapse.Panel header="🏢 公司情况" key="company">
             <Form.Item name="companyType" label="公司类型" tooltip="不同类型公司的AI应用程度不同">
-              <Radio.Group options={companyTypes} optionType="button" buttonStyle="solid" />
+              <Radio.Group 
+                options={companyTypes} 
+                optionType="button" 
+                buttonStyle="solid"
+                style={{ 
+                  display: 'flex', 
+                  flexWrap: 'wrap', 
+                  gap: '8px'
+                }}
+              />
             </Form.Item>
             <Form.Item name="companyDescription" label="公司描述（可选）" tooltip="补充公司规模、行业地位等信息">
               <TextArea 
@@ -111,7 +120,16 @@ const PersonalInfoForm = ({ career, onUpdateFactors }) => {
 
           <Collapse.Panel header="💼 岗位情况" key="job">
             <Form.Item name="jobLevel" label="职级" tooltip="不同职级的工作内容和要求不同">
-              <Radio.Group options={jobLevels} optionType="button" buttonStyle="solid" />
+              <Radio.Group 
+                options={jobLevels} 
+                optionType="button" 
+                buttonStyle="solid"
+                style={{ 
+                  display: 'flex', 
+                  flexWrap: 'wrap', 
+                  gap: '8px'
+                }}
+              />
             </Form.Item>
             <Form.Item name="jobDescription" label="岗位描述（可选）" tooltip="描述您的主要工作内容">
               <TextArea 
