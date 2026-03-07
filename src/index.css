@@ -41,10 +41,13 @@ body {
 /* Ant Design 组件科技感覆盖 */
 .ant-card {
   transition: all 0.3s ease;
+  background: #1e1e32 !important;
+  border: 1px solid rgba(0, 212, 255, 0.2) !important;
 }
 
 .ant-card:hover {
   transform: translateY(-2px);
+  border-color: rgba(0, 212, 255, 0.4) !important;
 }
 
 .ant-btn {
@@ -81,7 +84,7 @@ body {
 
 .ant-input,
 .ant-select-selector {
-  background: rgba(30, 30, 50, 0.8) !important;
+  background: #2a2a45 !important;
   border: 1px solid rgba(0, 212, 255, 0.3) !important;
   color: #ffffff !important;
   transition: all 0.3s ease !important;
@@ -104,24 +107,25 @@ body {
 }
 
 .ant-collapse {
-  background: transparent !important;
+  background: #252542 !important;
   border: 1px solid rgba(0, 212, 255, 0.2) !important;
   border-radius: 12px !important;
   overflow: hidden;
 }
 
 .ant-collapse-item {
-  border-bottom: 1px solid rgba(0, 212, 255, 0.1) !important;
+  border-bottom: 1px solid rgba(0, 212, 255, 0.15) !important;
 }
 
 .ant-collapse-header {
   color: #ffffff !important;
   font-weight: 600 !important;
+  background: #1e1e32 !important;
 }
 
 .ant-collapse-content {
-  background: rgba(20, 20, 35, 0.6) !important;
-  color: #c0c0d0 !important;
+  background: #1e1e32 !important;
+  color: #d0d0e0 !important;
 }
 
 .ant-typography {
@@ -151,13 +155,13 @@ body {
 }
 
 .ant-modal-content {
-  background: #1a1a2e !important;
+  background: #1e1e32 !important;
   border: 1px solid rgba(0, 212, 255, 0.2) !important;
   border-radius: 20px !important;
 }
 
 .ant-modal-header {
-  background: transparent !important;
+  background: #252542 !important;
   border-bottom: 1px solid rgba(0, 212, 255, 0.2) !important;
 }
 
