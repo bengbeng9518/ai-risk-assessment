@@ -8,7 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ConfigDict, HttpUrl
 
 from doubao_parser.image import doubao_image_parse
-from doubao_parser.video import doubao_video_parse
+from doubao_parser.video import doubao_video_parse, yunque_video_parse
 
 app = FastAPI(title="无印豆包 API", description="从豆包对话链接中提取图片和视频资源", version="1.0.0")
 
@@ -123,8 +123,10 @@ async def parse_video(request: VideoRequest):
 @app.get("/parse-video", summary="解析豆包视频(GET)")
 async def parse_video_get(url: str, return_raw: bool = False):
     try:
-        video_data = await doubao_video_parse(url, return_raw=return_raw)
-
+        if "doubao.com" in url:
+            video_data = await doubao_video_parse(url, return_raw=return_raw)
+        else:
+            video_data = await yunque_video_parse(url, return_raw=return_raw)
         if return_raw:
             return {"success": True, "data": video_data}
 

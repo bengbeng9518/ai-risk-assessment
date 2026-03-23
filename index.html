@@ -239,6 +239,9 @@
         .video-card video {
             width: 100%;
             height: auto;
+            max-height: 480px;
+            object-fit: contain;
+            background: #000000;
             display: block;
         }
 
@@ -626,7 +629,7 @@
                         v-model="url" 
                         type="text" 
                         class="input-field" 
-                        :placeholder="currentTab === 'image' ? '输入豆包对话链接，例如：https://www.doubao.com/thread/xxxxx' : '输入豆包视频分享链接，例如：https://www.doubao.com/video-sharing?share_id=xxx&video_id=xxx'"
+                        :placeholder="currentTab === 'image' ? '输入豆包对话链接，例如：https://www.doubao.com/thread/xxxxx' : '输入豆包或者云雀视频分享链接，例如：https://www.doubao.com/video-sharing?share_id=xxx&video_id=xxx'"
                         @keyup.enter="parseUrl"
                     >
                     <button 
