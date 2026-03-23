@@ -102,10 +102,13 @@ async def parse_doubao_get(url: str, return_raw: bool = False):
         raise HTTPException(status_code=500, detail="图片解析失败，请检查链接是否正确")
 
 
-@app.post("/parse-video", summary="解析豆包视频")
+@app.post("/parse-video", summary="解析豆包|云雀视频")
 async def parse_video(request: VideoRequest):
     try:
-        video_data = await doubao_video_parse(str(request.url), return_raw=request.return_raw)
+        if "doubao.com" in request.url:
+            video_data = await doubao_video_parse(str(request.url), return_raw=request.return_raw)
+        else:
+            video_data = await yunque_video_parse(str(request.url), return_raw=request.return_raw)
 
         if request.return_raw:
             return {"success": True, "data": video_data}
@@ -120,7 +123,7 @@ async def parse_video(request: VideoRequest):
         raise HTTPException(status_code=500, detail="视频解析失败，请检查链接是否正确")
 
 
-@app.get("/parse-video", summary="解析豆包视频(GET)")
+@app.get("/parse-video", summary="解析豆包|云雀视频(GET)")
 async def parse_video_get(url: str, return_raw: bool = False):
     try:
         if "doubao.com" in url:
