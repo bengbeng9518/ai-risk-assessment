@@ -629,7 +629,7 @@
                         v-model="url" 
                         type="text" 
                         class="input-field" 
-                        :placeholder="currentTab === 'image' ? '输入豆包对话链接，例如：https://www.doubao.com/thread/xxxxx' : '输入豆包或者云雀视频分享链接，例如：https://www.doubao.com/video-sharing?share_id=xxx&video_id=xxx'"
+                        :placeholder="currentTab === 'image' ? '输入包含图片的豆包对话分享链接，例如：https://www.doubao.com/thread/xxxxx' : '输入豆包或者云雀视频分享链接，例如：https://www.doubao.com/video-sharing?share_id=xxx&video_id=xxx'"
                         @keyup.enter="parseUrl"
                     >
                     <button 
@@ -753,11 +753,17 @@
                     copiedIndex: null,
                     videoDownloading: false,
                     videoCopied: false,
-                    apiBaseUrl: window.location.origin
+                    apiBaseUrl: window.location.origin,
+                    urlRegex: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g
                 }
             },
 
             methods: {
+                extractUrl(text) {
+                    if (!text) return null;
+                    const matches = text.match(this.urlRegex);
+                    return matches ? matches[0] : null;
+                },
                 async copyToClipboard(text) {
                     try {
                         if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -798,7 +804,14 @@
                 },
                 async parseUrl() {
                     if (!this.url.trim()) {
-                        this.showError('请输入豆包对话链接');
+                        this.showError('请输入包含链接的文本');
+                        return;
+                    }
+
+                    const extractedUrl = this.extractUrl(this.url);
+                    
+                    if (!extractedUrl) {
+                        this.showError('未在输入内容中找到有效的网址');
                         return;
                     }
 
@@ -813,8 +826,8 @@
 
                     try {
                         if (this.currentTab === 'image') {
-                            const response = await axios.get(`${this.apiBaseUrl}/parse`, {
-                                params: { url: this.url }
+                            const response = await axios.post(`${this.apiBaseUrl}/parse`, {
+                                url: extractedUrl
                             });
 
                             if (response.data.success) {
@@ -823,8 +836,8 @@
                                 this.showError('解析失败，请检查链接是否正确');
                             }
                         } else {
-                            const response = await axios.get(`${this.apiBaseUrl}/parse-video`, {
-                                params: { url: this.url }
+                            const response = await axios.post(`${this.apiBaseUrl}/parse-video`, {
+                                url: extractedUrl
                             });
 
                             if (response.data.success) {

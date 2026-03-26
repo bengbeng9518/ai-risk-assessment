@@ -105,8 +105,9 @@ async def parse_doubao_get(url: str, return_raw: bool = False):
 @app.post("/parse-video", summary="解析豆包|云雀视频")
 async def parse_video(request: VideoRequest):
     try:
-        if "doubao.com" in request.url:
-            video_data = await doubao_video_parse(str(request.url), return_raw=request.return_raw)
+        url_str = str(request.url)
+        if "doubao.com" in url_str:
+            video_data = await doubao_video_parse(url_str, return_raw=request.return_raw)
         else:
             video_data = await yunque_video_parse(str(request.url), return_raw=request.return_raw)
 
